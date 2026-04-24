@@ -194,39 +194,6 @@ textarea {
   transform: rotate(45deg);
 }
 
-.nav {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.nav a {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-
-  color: #00ffcc;
-  font-weight: bold;
-  text-decoration: none;
-
-  background: linear-gradient(#0a0a0a, #000);
-  border: 2px solid #00ff66;
-
-  box-shadow:
-    0 0 8px #00ff66,
-    inset 0 0 6px rgba(0,255,100,0.3);
-}
-
-/* ホバー（PC） */
-.nav a:hover {
-  background: linear-gradient(#003300, #001a00);
-}
-
-/* 押した感 */
-.nav a:active {
-  transform: scale(0.95);
-}
-
 .tabs {
   display: flex;
   margin-bottom: 12px;
