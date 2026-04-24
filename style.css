@@ -193,3 +193,85 @@ textarea {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
+.nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.nav a {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+
+  color: #00ffcc;
+  font-weight: bold;
+  text-decoration: none;
+
+  background: linear-gradient(#0a0a0a, #000);
+  border: 2px solid #00ff66;
+
+  box-shadow:
+    0 0 8px #00ff66,
+    inset 0 0 6px rgba(0,255,100,0.3);
+}
+
+/* ホバー（PC） */
+.nav a:hover {
+  background: linear-gradient(#003300, #001a00);
+}
+
+/* 押した感 */
+.nav a:active {
+  transform: scale(0.95);
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+
+  font-weight: bold;
+  text-decoration: none;
+  color: #00ffcc;
+
+  background: linear-gradient(#111, #000);
+  border: 2px solid #00ff66;
+
+  box-shadow:
+    0 0 6px #00ff66,
+    inset 0 0 6px rgba(0,255,100,0.2);
+
+  position: relative;
+}
+
+/* 選択中 */
+.tab.active {
+  background: linear-gradient(#003300, #001100);
+  color: #00ff66;
+  box-shadow:
+    0 0 12px #00ff66,
+    inset 0 0 10px rgba(0,255,100,0.5);
+}
+
+/* 斜めカット */
+.tab::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-width: 0 0 18px 18px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+/* 押した感 */
+.tab:active {
+  transform: scale(0.95);
+}
