@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ドッカンバトル ATK/DEFシミュレーター</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <h2 class="full">ドッカンバトル ATK/DEFシミュレーター</h2>
+
+  <!-- 基礎 -->
+  <div class="card">
+    <div class="card-title">基礎ステータス</div>
+
+    <label>基礎ATK</label>
+    <input type="number" id="baseAtk">
+
+    <label>基礎DEF</label>
+    <input type="number" id="baseDef">
+    
+  </div>
+
+  <!-- バフ -->
+  <div class="card">
+    <div class="card-title">バフ(%)</div>
+
+    <label>フィールド(%)</label>
+    <div class="row">
+      <input id="fieldAtk" placeholder="ATK">
+      <input id="fieldDef" placeholder="DEF">
+    </div>
+
+    <label>サポート(%)</label>
+    <div class="row">
+      <input id="supportAtk" placeholder="ATK">
+      <input id="supportDef" placeholder="DEF">
+    </div>
+
+    <label>アクティブ(%)</label>
+    <div class="row">
+      <input id="activeAtk" placeholder="ATK">
+      <input id="activeDef" placeholder="DEF">
+    </div>
+
+    <label>リンク(%)</label>
+    <div class="row">
+      <input id="linkAtk" placeholder="ATK">
+      <input id="linkDef" placeholder="DEF">
+    </div>
+
+    <label>気力倍率</label>
+    <select id="kiBonus">
+      <option value="2.0">LR 2倍</option>
+      <option value="1.6">特殊フェス限UR 1.6倍</option>
+      <option value="1.5">フェス限UR 1.5倍</option>
+      <option value="1.4">通常ガチャ産 1.4倍</option>
+      <option value="1.3">イベント産 1.3倍</option>
+    </select>
+  </div>
+
+  <!-- 必殺 -->
+  <div class="card">
+    <div class="card-title">必殺</div>
+
+    <label>必殺技倍率</label>
+    <select id="superMultiplier">
+      <!-- ← 中身そのまま -->
+      <option value="3.55">SSR or Z覚醒UR 極限前 特大 (3.55)</option>
+      <option value="4.3">UR 極限前 超特大 (4.3)</option>
+      <option value="5.05">UR 極限前 超絶特大 (5.05)</option>
+      <option value="3.95">LR 極限前 極大 (3.95)</option>
+      <option value="5.4">LR 極限前 超極大 (5.4)</option>
+      <option value="4.3">SSR or Z覚醒UR 極限後 特大 (4.3)</option>
+      <option value="5.3">UR 極限後 超特大 (5.3)</option>
+      <option value="6.3">UR 極限後 超絶特大 (6.3)</option>
+      <option value="4.2">LR 極限後 極大 (4.2)</option>
+      <option value="5.9">LR 極限後 超極大 (5.9)</option>
+    </select>
+
+    <label>必殺技効果(ATK)</label>
+    <select id="superEffectSelectAtk" onchange="toggleSuperEffectInput('atk')">
+      <option value="0">なし</option>
+      <option value="20">ATK20%UP</option>
+      <option value="30">ATK30%UP</option>
+      <option value="50">ATK50%UP</option>
+      <option value="100">ATK100%UP</option>
+      <option value="custom">自由</option>
+    </select>
+    <input id="superEffectCustomAtk" style="display:none;">
+
+    <label>必殺技効果(DEF)</label>
+    <select id="superEffectSelectDef" onchange="toggleSuperEffectInput('def')">
+      <option value="0">なし</option>
+      <option value="20">DEF20%UP</option>
+      <option value="30">DEF30%UP</option>
+      <option value="50">DEF50%UP</option>
+      <option value="100">DEF100%UP</option>
+      <option value="custom">自由</option>
+    </select>
+    <input id="superEffectCustomDef" style="display:none;">
+
+    <label>必殺回数</label>
+    <input id="superStack" value="1">
+
+    <label>追加効果</label>
+    <select id="plussuperMultiplier">
+      <option value="0">-</option>
+      <option value="0.2">必殺技の効果が更にアップ！</option>
+      <option value="0.3">必殺技の効果が更に大アップ！</option>
+    </select>
+  </div>
+
+  <!-- リーダー -->
+  <div class="card">
+    <div class="card-title">リーダー</div>
+    <label>自前リーダー</label>  
+    <input id="leaderSkill" placeholder="リーダー%">
+    <label>フレンドリーダー</label> 
+    <input id="friendLeaderSkill" placeholder="フレンド%">
+  </div>
+
+  <!-- パッシブ -->
+  <div class="card full">
+    <div class="card-title">パッシブ</div>
+    <textarea id="passiveSkill"></textarea>
+  </div>
+
+  <!-- ボタン -->
+  <div class="card full">
+    <button onclick="calculate()">計算</button>
+  </div>
+
+  <!-- 結果 -->
+  <div class="card full result">
+    <div id="resultAtk">-</div>
+    <div id="resultDef">-</div>
+    <pre id="detail"></pre>
+  </div>
+
+  <div class="card full">
+    <div class="card-title">耐久ライン</div>
+
+    <label>ダメージ軽減率 (%)</label>
+    <input type="number" id="damageReduction" value="0">
+
+    <label>
+      <input type="checkbox" id="guard">
+      全属性ガード
+    </label>
+
+    <div id="hpResult"></div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

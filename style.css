@@ -1,0 +1,147 @@
+body {
+  margin: 0;
+  font-family: 'Arial Black', sans-serif;
+  background: url('方眼紙緑.png'); /* グリッド風 */
+  background-size: cover;
+  color: white;
+}
+
+/* ===== レイアウト ===== */
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 12px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+  .full {
+    grid-column: span 2;
+  }
+}
+
+/* ===== ドッカンカード ===== */
+.card {
+  position: relative;
+  background: linear-gradient(#1a1a1a, #000);
+  border: 2px solid #00ff66;
+  box-shadow:
+    0 0 10px #00ff66,
+    inset 0 0 10px rgba(0,255,100,0.3);
+  padding: 10px;
+}
+
+/* 斜めカット */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: black;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+/* タイトル */
+.card-title {
+  color: #00ff66;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00ff66;
+  margin-bottom: 6px;
+}
+
+/* 入力 */
+input, select, textarea {
+  width: 100%;
+  background: black;
+  border: 1px solid #00ff66;
+  color: #00ffcc;
+  padding: 6px;
+  font-weight: bold;
+}
+
+/* Chrome, Safari系 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* 横並び */
+.row {
+  display: flex;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+/* ===== ボタン（出発風） ===== */
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #00eaff;
+
+  background: radial-gradient(circle, #00aaff, #004488);
+  border: 2px solid #00eaff;
+  border-radius: 40px;
+
+  box-shadow:
+    0 0 15px #00eaff,
+    inset 0 0 10px rgba(255,255,255,0.4);
+}
+
+/* ===== 結果 ===== */
+.result {
+  text-align: center;
+  background: black;
+  border: 2px solid yellow;
+  box-shadow: 0 0 10px yellow;
+  padding: 10px;
+}
+
+#resultAtk {
+  color: orange;
+  font-size: 22px;
+  text-shadow: 0 0 6px orange;
+}
+
+#resultDef {
+  color: lime;
+  font-size: 22px;
+  text-shadow: 0 0 6px lime;
+}
+
+#detail {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #aaa;
+  white-space: pre-wrap;
+}
+
+/* ===== 耐久 ===== */
+#hpResult {
+  margin-top: 8px;
+  color: #00ffcc;
+  font-size: 13px;
+  text-shadow: 0 0 4px #00ffcc;
+}
+
+/* ===== textarea ===== */
+textarea {
+  min-height: 180px;
+  resize: vertical;
+  line-height: 1.4;
+}
