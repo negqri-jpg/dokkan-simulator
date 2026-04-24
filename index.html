@@ -17,6 +17,16 @@
 
   <h2 class="full">ドッカンバトル ATK/DEFシミュレーター</h2>
 
+  <div class="card">
+    <div class="card-title">キャラクター</div>
+
+    <label>二つ名</label>
+    <input type="text" id="nickname" placeholder="例：怒りの大反撃">
+
+    <label>名前</label>
+    <input type="text" id="charName" placeholder="例：孫悟空">
+  </div>
+  
   <!-- 基礎 -->
   <div class="card">
     <div class="card-title">基礎ステータス</div>
@@ -166,9 +176,29 @@
     <div id="hpResult"></div>
   </div>
 
+  <div class="file-area">
+
+  <div class="file-buttons">
+    <button onclick="saveToFile()" class="btn save">
+      💾 JSON保存
+    </button>
+
+    <label for="fileLoader" class="btn load">
+      📂 読み込む
+      <input type="file" id="fileLoader" hidden onchange="loadFromFile()">
+    </label>
+  </div>
+
+  <div class="file-name-box">
+    <span id="fileName">未選択</span>
+  </div>
+
+</div>
+
 </div>
 
 
 <script src="script.js"></script>
+<script src="json.js"></script>
 </body>
 </html>
