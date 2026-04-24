@@ -39,7 +39,7 @@ function parsePassive(text) {
     // 🔥 全角スペースも削除
     let t = raw.replace(/[\s　]/g, "");
 
-    const isHeader = !t.includes("【");
+    const isHeader = !t.match(/(ATK|DEF).*\d/);
 
     // =========================
     // 見出し処理
@@ -83,8 +83,17 @@ function parsePassive(text) {
     // =========================
     // 数値抽出
     // =========================
-    const matches = [...t.matchAll(/【(\d+)】/g)];
-    const total = matches.reduce((s, m) => s + Number(m[1]), 0);
+    // 【】あり + なし両対応
+    const matches = [
+      ...t.matchAll(/【(\d+)】/g),
+      ...t.matchAll(/(\d+)%/g)
+    ];
+
+    const total = matches.reduce((s, m) => {
+      const val = m[1] || m[0].replace("%", "");
+      return s + Number(val);
+    }, 0);
+    
     if (!total) return;
 
     // =========================
