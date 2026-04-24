@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  font-weight: bold;
+  letter-spacing: 0.5px;
   font-family: 'Arial Black', sans-serif;
   background: url('方眼紙緑.png'); /* グリッド風 */
   background-size: cover;
@@ -28,7 +30,7 @@ body {
 /* ===== ドッカンカード ===== */
 .card {
   position: relative;
-  background: linear-gradient(#1a1a1a, #000);
+  background: rgba(0, 0, 0, 0.85);
   border: 2px solid #00ff66;
   box-shadow:
     0 0 10px #00ff66,
@@ -94,6 +96,9 @@ button {
   font-weight: bold;
   color: #00eaff;
 
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
   background: radial-gradient(circle, #00aaff, #004488);
   border: 2px solid #00eaff;
   border-radius: 40px;
@@ -114,13 +119,13 @@ button {
 
 #resultAtk {
   color: orange;
-  font-size: 22px;
+  font-size: 26px;
   text-shadow: 0 0 6px orange;
 }
 
 #resultDef {
   color: lime;
-  font-size: 22px;
+  font-size: 26px;
   text-shadow: 0 0 6px lime;
 }
 
@@ -144,4 +149,47 @@ textarea {
   min-height: 180px;
   resize: vertical;
   line-height: 1.4;
+}
+
+.dokkan-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* 元のチェックボックスを消す */
+.dokkan-check input {
+  display: none;
+}
+
+/* 見た目の箱 */
+.dokkan-check .box {
+  width: 36px;
+  height: 18px;
+  border-radius: 20px;
+  border: 2px solid #00ff66;
+  background: black;
+  box-shadow: 0 0 6px #00ff66;
+  position: relative;
+}
+
+/* チェック時 */
+.dokkan-check input:checked + .box {
+  background: linear-gradient(#00ff66, #008844);
+  box-shadow: 0 0 10px #00ff66;
+}
+
+/* チェックマーク */
+.dokkan-check input:checked + .box::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
