@@ -5,56 +5,6 @@
 <title>コメント</title>
 
 <style>
-    .tabs {
-      display: flex;
-      margin-bottom: 12px;
-    }
-
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-
-      font-weight: bold;
-      text-decoration: none;
-      color: #00ffcc;
-
-      background: linear-gradient(#111, #000);
-      border: 2px solid #00ff66;
-
-      box-shadow:
-        0 0 6px #00ff66,
-        inset 0 0 6px rgba(0,255,100,0.2);
-
-      position: relative;
-    }
-
-    /* 選択中 */
-    .tab.active {
-      background: linear-gradient(#003300, #001100);
-      color: #00ff66;
-      box-shadow:
-        0 0 12px #00ff66,
-        inset 0 0 10px rgba(0,255,100,0.5);
-    }
-
-    /* 斜めカット */
-    .tab::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      border-width: 0 0 18px 18px;
-      border-style: solid;
-      border-color: transparent transparent black transparent;
-    }
-
-    /* 押した感 */
-    .tab:active {
-      transform: scale(0.95);
-    }
-
-
 body {
   background: #0f172a;
   color: white;
@@ -62,6 +12,29 @@ body {
   padding: 12px;
 }
 
+/* タブ */
+.tabs {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #00ffcc;
+  background: linear-gradient(#111, #000);
+  border: 2px solid #00ff66;
+}
+
+.tab.active {
+  background: linear-gradient(#003300, #001100);
+  color: #00ff66;
+}
+
+/* 入力 */
 textarea, input {
   width: 100%;
   margin-top: 6px;
@@ -75,8 +48,10 @@ button {
   margin-top: 8px;
   padding: 8px;
   width: 100%;
+  font-weight: bold;
 }
 
+/* コメント */
 .comment {
   border-bottom: 1px solid #333;
   margin-top: 10px;
@@ -89,7 +64,7 @@ button {
 }
 
 .time {
-  font-size: 10px;
+  font-size: 11px;
   color: #aaa;
 }
 </style>
@@ -97,84 +72,117 @@ button {
 
 <body>
 
-  <div class="tabs">
-    <a href="index.html" class="tab">計算</a>
-    <a href="spec.html" class="tab">使い方</a>
-    <a href="comment.html" class="tab active">コメント</a>
-  </div>
+<div class="tabs">
+  <a href="index.html" class="tab">計算</a>
+  <a href="spec.html" class="tab">使い方</a>
+  <a href="comment.html" class="tab active">コメント</a>
+</div>
 
 <h1>コメント欄</h1>
 
 <input id="name" placeholder="名前（未入力なら匿名）">
-
 <textarea id="text" placeholder="コメントを書く"></textarea>
+<button onclick="postComment()">投稿</button>
 
-<button onclick="post()">投稿</button>
-
-<h2>NGワード設定</h2>
-<input id="ng" placeholder="カンマ区切り（例: ばか,しね）">
-<button onclick="saveNG()">保存</button>
+<h2>NGワード追加</h2>
+<input id="ngInput" placeholder="NGワード">
+<button onclick="addNG()">追加</button>
 
 <h2>コメント一覧</h2>
 <div id="list"></div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
-function getNG() {
-  return (localStorage.getItem("ng") || "").split(",");
-}
+const firebaseConfig = {
+  apiKey: "AIzaSyC-7N89gdb2b4sWnJt3R82jQFZedQ8ow7E",
+  authDomain: "dokkan-comment.firebaseapp.com",
+  projectId: "dokkan-comment",
+  storageBucket: "dokkan-comment.firebasestorage.app",
+  messagingSenderId: "598573061096",
+  appId: "1:598573061096:web:3c41dad20fc67aba55ca5d"
+};
 
-function saveNG() {
-  localStorage.setItem("ng", document.getElementById("ng").value);
-  alert("保存した");
-}
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-function post() {
+// NGワード
+let ngList = [];
+
+onSnapshot(collection(db, "ngwords"), (snapshot) => {
+  ngList = [];
+  snapshot.forEach(doc => {
+    ngList.push(doc.data().word);
+  });
+});
+
+// 投稿
+window.postComment = async function () {
   const name = document.getElementById("name").value || "匿名";
   const text = document.getElementById("text").value;
 
-  const ngWords = getNG();
+  if (!text) return;
 
-  for (let ng of ngWords) {
+  // NGチェック
+  for (let ng of ngList) {
     if (ng && text.includes(ng)) {
       alert("NGワードが含まれています");
       return;
     }
   }
 
-  const data = JSON.parse(localStorage.getItem("comments") || "[]");
-
-  data.unshift({
+  await addDoc(collection(db, "comments"), {
     name,
     text,
-    time: new Date().toLocaleString()
+    time: Date.now()
   });
 
-  localStorage.setItem("comments", JSON.stringify(data));
-
   document.getElementById("text").value = "";
+};
 
-  render();
+// NGワード追加
+window.addNG = async function () {
+  const word = document.getElementById("ngInput").value;
+
+  if (!word) return;
+
+  await addDoc(collection(db, "ngwords"), {
+    word
+  });
+
+  document.getElementById("ngInput").value = "";
+};
+
+// 時間フォーマット
+function formatTime(t) {
+  const d = new Date(t);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const h = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+
+  return `${y}/${m}/${day} ${h}:${min}`;
 }
 
-function render() {
-  const data = JSON.parse(localStorage.getItem("comments") || "[]");
-
+// コメント表示
+onSnapshot(collection(db, "comments"), (snapshot) => {
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  for (let c of data) {
+  snapshot.forEach(doc => {
+    const c = doc.data();
+
     list.innerHTML += `
       <div class="comment">
         <div class="name">${c.name}</div>
         <div>${c.text}</div>
-        <div class="time">${c.time}</div>
+        <div class="time">${formatTime(c.time)}</div>
       </div>
     `;
-  }
-}
-
-render();
+  });
+});
 
 </script>
 
