@@ -194,7 +194,9 @@ function calculate() {
 
   const kiBonus = Number(document.getElementById("kiBonus").value) || 1;
 
-  const superMultiplier = Number(document.getElementById("superMultiplier").value) || 1;
+  let superMultiplier = Number(document.getElementById("superMultiplier").value);
+  const superPowerLv = Number(document.getElementById("superPowerLv").value || 0);
+  superMultiplier += superPowerLv * 0.05;
   const plusSuper = Number(document.getElementById("plussuperMultiplier").value) || 0;
 
   const stack = Number(document.getElementById("superStack").value) || 1;
@@ -239,7 +241,20 @@ function calculate() {
   // 耐久計算
   // =========================
 
-  const reduction = (Number(document.getElementById("damageReduction").value) || 0) / 100;
+  let reduction = Number(document.getElementById("damageReduction").value) || 0;
+    reduction = Math.max(0, Math.min(reduction, 99));
+    reduction /= 100;
+
+  if (resultDef <= 0) {
+      document.getElementById("hpResult").innerText = "DEFが0です";
+      return;
+    }
+  
+  if (isNaN(resultDef)) {
+      document.getElementById("hpResult").innerText = "計算エラー";
+      return;
+  }
+
   const guard = document.getElementById("guard").checked;
 
   function calcPerfectLine() {
