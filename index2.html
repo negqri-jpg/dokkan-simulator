@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ドッカンバトルシミュレーションの使い方</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #0f172a;
+      color: #e5e7eb;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    h1 {
+      color: #00ff66;
+      border-bottom: 2px solid #00ff66;
+      padding-bottom: 6px;
+    }
+
+    h2 {
+      color: #38bdf8;
+      margin-top: 20px;
+    }
+
+    code {
+      background: #1e293b;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #facc15;
+    }
+
+    .box {
+      background: #111827;
+      border: 1px solid #334155;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+
+    a {
+      color: #22c55e;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>このサイトの使い方</h1>
+
+  <h2>① 基本の使い方</h2>
+  <div class="box">
+    ・基礎ATK / DEF を入力<br>
+    ・リーダースキルを入力<br>
+    ・パッシブスキルを入力<br>
+    ・必殺技倍率を設定<br>
+    → 「計算」を押す
+  </div>
+
+  <h2>② パッシブスキルの書き方</h2>
+  <div class="box">
+    以下の形式で入力してください：
+
+    <pre>
+基本効果
+・ATK/DEF【150】%UP
+
+攻撃時
+・ATK【100】%UP
+    </pre>
+  </div>
+
+  <h2>③ パッシブ判定ルール</h2>
+  <div class="box">
+    ● パッシブ1（常時系）<br>
+    基本効果 / 登場時 / ターン開始など<br><br>
+
+    ● パッシブ2（条件系）<br>
+    攻撃時 / 攻撃を受けるとき / 回避するたび など
+  </div>
+
+  <h2>④ 耐久ラインについて</h2>
+  <div class="box">
+    完封ライン：ダメージ0になる敵ATK<br>
+    耐久ライン：HP内で耐えられる最大敵ATK
+  </div>
+
+  <h2>⑤ 注意事項</h2>
+  <div class="box">
+    ・実際のゲームとは完全一致ではありません<br>
+    ・あくまで理論値・目安です
+  </div>
+
+  <h2>⑥ メインページへ</h2>
+  <div class="box">
+    <a href="index.html">▶ 計算機に戻る</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>コメント</title>
+
+<style>
+body {
+  background: #0f172a;
+  color: white;
+  font-family: Arial;
+  padding: 12px;
+}
+
+textarea, input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px;
+  background: black;
+  color: #00ffcc;
+  border: 1px solid #00ff66;
+}
+
+button {
+  margin-top: 8px;
+  padding: 8px;
+  width: 100%;
+}
+
+.comment {
+  border-bottom: 1px solid #333;
+  margin-top: 10px;
+  padding-bottom: 6px;
+}
+
+.name {
+  color: #00ff66;
+  font-weight: bold;
+}
+
+.time {
+  font-size: 10px;
+  color: #aaa;
+}
+</style>
+</head>
+
+<body>
+
+<h1>コメント欄</h1>
+
+<input id="name" placeholder="名前（未入力なら匿名）">
+
+<textarea id="text" placeholder="コメントを書く"></textarea>
+
+<button onclick="post()">投稿</button>
+
+<h2>NGワード設定</h2>
+<input id="ng" placeholder="カンマ区切り（例: ばか,しね）">
+<button onclick="saveNG()">保存</button>
+
+<h2>コメント一覧</h2>
+<div id="list"></div>
+
+<script>
+
+function getNG() {
+  return (localStorage.getItem("ng") || "").split(",");
+}
+
+function saveNG() {
+  localStorage.setItem("ng", document.getElementById("ng").value);
+  alert("保存した");
+}
+
+function post() {
+  const name = document.getElementById("name").value || "匿名";
+  const text = document.getElementById("text").value;
+
+  const ngWords = getNG();
+
+  for (let ng of ngWords) {
+    if (ng && text.includes(ng)) {
+      alert("NGワードが含まれています");
+      return;
+    }
+  }
+
+  const data = JSON.parse(localStorage.getItem("comments") || "[]");
+
+  data.unshift({
+    name,
+    text,
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("comments", JSON.stringify(data));
+
+  document.getElementById("text").value = "";
+
+  render();
+}
+
+function render() {
+  const data = JSON.parse(localStorage.getItem("comments") || "[]");
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  for (let c of data) {
+    list.innerHTML += `
+      <div class="comment">
+        <div class="name">${c.name}</div>
+        <div>${c.text}</div>
+        <div class="time">${c.time}</div>
+      </div>
+    `;
+  }
+}
+
+render();
+
+</script>
+
+</body>
+</html>
