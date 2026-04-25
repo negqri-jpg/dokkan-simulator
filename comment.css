@@ -1,8 +1,15 @@
 .comment-container {
   max-width: 700px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
+
+@media (max-width: 600px) {
+  .comment-container {
+    padding: 10px;
+  }
+}
+  
 
 .post-box {
   background: rgba(0,0,0,0.85);
@@ -23,6 +30,12 @@
   overflow-y: auto;
   margin-top: 20px;
   opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .ng-box {
+    max-height: 250px;
+  }
 }
 
 .post-box,
