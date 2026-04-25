@@ -83,10 +83,10 @@
 
   <!-- 必殺 -->
   <div class="card">
-    <div class="card-title">必殺</div>
+    <div class="card-title">必殺技</div>
 
     <label>必殺技倍率</label>
-    <select id="superMultiplier">
+    <select id="normalMultiplier">
       <!-- ← 中身そのまま -->
       <option value="8.4">LR 極限前 EX必殺技 (8.4)</option>
       <option value="7.4">UR 極限前 EX必殺技 (7.4)</option>
@@ -103,7 +103,7 @@
     </select>
 
     <label>必殺技効果(ATK)</label>
-    <select id="superEffectSelectAtk" onchange="toggleSuperEffectInput('atk')">
+    <select id="normalAtkEffect" onchange="toggleSuperEffectInput('normal','atk')">
       <option value="0">なし</option>
       <option value="20">ATK20%UP</option>
       <option value="30">ATK30%UP</option>
@@ -111,10 +111,10 @@
       <option value="100">ATK100%UP</option>
       <option value="custom">自由</option>
     </select>
-    <input id="superEffectCustomAtk" style="display:none;">
+    <input id="normalCustomAtk" style="display:none;">
 
     <label>必殺技効果(DEF)</label>
-    <select id="superEffectSelectDef" onchange="toggleSuperEffectInput('def')">
+    <select id="normalDefEffect" onchange="toggleSuperEffectInput('normal','def')">
       <option value="0">なし</option>
       <option value="20">DEF20%UP</option>
       <option value="30">DEF30%UP</option>
@@ -122,13 +122,67 @@
       <option value="100">DEF100%UP</option>
       <option value="custom">自由</option>
     </select>
-    <input id="superEffectCustomDef" style="display:none;">
+    <input id="normalCustomDef" style="display:none;">
 
     <label>必殺回数</label>
-    <input id="superStack" value="1">
+    <input id="normalCount" value="0">
 
     <label>追加効果</label>
-    <select id="plussuperMultiplier">
+    <select id="normalPlus">
+      <option value="0">-</option>
+      <option value="0.2">必殺技の効果が更にアップ！</option>
+      <option value="0.3">必殺技の効果が更に大アップ！</option>
+    </select>
+  </div>
+
+  <!-- 超必殺技 -->
+  <div class="card">
+    <div class="card-title">超必殺技</div>
+
+    <label>必殺技倍率</label>
+    <select id="ultraMultiplier">
+      <!-- ← 中身そのまま -->
+      <option value="8.4">LR 極限前 EX必殺技 (8.4)</option>
+      <option value="7.4">UR 極限前 EX必殺技 (7.4)</option>
+      <option value="5.9">LR 極限後 超極大 (5.9)</option>
+      <option value="5.4">LR 極限前 超極大 (5.4)</option>
+      <option value="4.2">LR 極限後 極大 (4.2)</option>
+      <option value="3.95">LR 極限前 極大 (3.95)</option>
+      <option value="6.3">UR 極限後 超絶特大 (6.3)</option>
+      <option value="5.05">UR 極限前 超絶特大 (5.05)</option>
+      <option value="5.3">UR 極限後 超特大 (5.3)</option>
+      <option value="4.3">UR 極限前 超特大 (4.3)</option>
+      <option value="4.3">SSR or Z覚醒UR 極限後 特大 (4.3)</option>
+      <option value="3.55">SSR or Z覚醒UR 極限前 特大 (3.55)</option>
+    </select>
+
+    <label>必殺技効果(ATK)</label>
+    <select id="ultraAtkEffect" onchange="toggleSuperEffectInput('ultra','atk')">
+      <option value="0">なし</option>
+      <option value="20">ATK20%UP</option>
+      <option value="30">ATK30%UP</option>
+      <option value="50">ATK50%UP</option>
+      <option value="100">ATK100%UP</option>
+      <option value="custom">自由</option>
+    </select>
+    <input id="ultraCustomAtk" style="display:none;">
+
+    <label>必殺技効果(DEF)</label>
+    <select id="ultraDefEffect" onchange="toggleSuperEffectInput('ultra','def')">
+      <option value="0">なし</option>
+      <option value="20">DEF20%UP</option>
+      <option value="30">DEF30%UP</option>
+      <option value="50">DEF50%UP</option>
+      <option value="100">DEF100%UP</option>
+      <option value="custom">自由</option>
+    </select>
+    <input id="ultraCustomDef" style="display:none;">
+
+    <label>必殺回数</label>
+    <input id="ultraCount" value="0">
+
+    <label>追加効果</label>
+    <select id="ultraPlus">
       <option value="0">-</option>
       <option value="0.2">必殺技の効果が更にアップ！</option>
       <option value="0.3">必殺技の効果が更に大アップ！</option>

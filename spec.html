@@ -4,170 +4,101 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ドッカンバトルシミュレーションの使い方</title>
-
-  <style>
-    .tabs {
-      display: flex;
-      margin-bottom: 12px;
-    }
-
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-
-      font-weight: bold;
-      text-decoration: none;
-      color: #00ffcc;
-
-      background: linear-gradient(#111, #000);
-      border: 2px solid #00ff66;
-
-      box-shadow:
-        0 0 6px #00ff66,
-        inset 0 0 6px rgba(0,255,100,0.2);
-
-      position: relative;
-    }
-
-    /* 選択中 */
-    .tab.active {
-      background: linear-gradient(#003300, #001100);
-      color: #00ff66;
-      box-shadow:
-        0 0 12px #00ff66,
-        inset 0 0 10px rgba(0,255,100,0.5);
-    }
-
-    /* 斜めカット */
-    .tab::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      border-width: 0 0 18px 18px;
-      border-style: solid;
-      border-color: transparent transparent black transparent;
-    }
-
-    /* 押した感 */
-    .tab:active {
-      transform: scale(0.95);
-    }
-
-    body {
-      margin: 0;
-      padding: 16px;
-      background: #0f172a;
-      color: #e5e7eb;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-    }
-
-    h1 {
-      color: #00ff66;
-      border-bottom: 2px solid #00ff66;
-      padding-bottom: 6px;
-    }
-
-    h2 {
-      color: #38bdf8;
-      margin-top: 20px;
-    }
-
-    code {
-      background: #1e293b;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: #facc15;
-    }
-
-    .box {
-      background: #111827;
-      border: 1px solid #334155;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 6px;
-    }
-
-    a {
-      color: #22c55e;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="spec.css">
 </head>
 
 <body>
+<div class="spec-container">
+  
+      <div class="tabs">
+        <a href="index.html" class="tab">計算</a>
+        <a href="spec.html" class="tab active">使い方</a>
+        <a href="comment.html" class="tab">コメント</a>
+      </div>
 
-    <div class="tabs">
-      <a href="index.html" class="tab">計算</a>
-      <a href="spec.html" class="tab active">使い方</a>
-      <a href="comment.html" class="tab">コメント</a>
+    <h1>このサイトの使い方</h1>
+    
+    <h2>① 基本の使い方</h2>
+    <div class="section">
+      ・基礎ATK / DEF を入力<br>
+      ・リーダースキルを入力<br>
+      ・パッシブスキルを入力<br>
+      ・必殺技倍率を設定<br>
+      → 「計算」を押す
     </div>
 
-  <h1>このサイトの使い方</h1>
+    <h2>② パッシブスキルの書き方</h2>
+    <div class="section">
+      以下の形式で入力してください：
 
-  <h2>① 基本の使い方</h2>
-  <div class="box">
-    ・基礎ATK / DEF を入力<br>
-    ・リーダースキルを入力<br>
-    ・パッシブスキルを入力<br>
-    ・必殺技倍率を設定<br>
-    → 「計算」を押す
-  </div>
+      <div class="code">
+        基本効果
+        <br>
+        ・ATK/DEF150%UP
+        <br>
+        <br>
+        攻撃時
+        <br>
+        ・ATK100%UP
+        <br>
+        <br>
 
-  <h2>② パッシブスキルの書き方</h2>
-  <div class="box">
-    以下の形式で入力してください：
+        数値を含まない行は見出しとして扱われます
+        <br>
+        例：
+        <br>
+        基本効果
+        <br>
+        攻撃時
+        <br>
+        <br>
 
-    <pre>
-基本効果
-・ATK/DEF150%UP
+        先頭に「-」をつけると無効化されます
+        <br>
 
-攻撃時
-・ATK100%UP
+        例：
+        <br>
+        -基本効果 → その見出しを無効
+        <br>
+        -・ATK150%UP → その行のみ無効
+        <br>
+        <br>
 
-数値を含まない行は見出しとして扱われます
-例：
-基本効果
-攻撃時
+        ATK/DEFを含まない数値は計算に影響しません
+        <br>
+        例：
+        <br>
+        HP50%以下 → 無視されます
+      </div>
+    </div>
 
-先頭に「-」をつけると無効化されます
+    <h2>③ パッシブ判定ルール</h2>
+    <div class="section">
+      ● パッシブ1（常時系）<br>
+      基本効果 / 登場時 / ターン開始など<br><br>
 
-例：
--基本効果 → その見出しを無効
--・ATK150%UP → その行のみ無効
+      ● パッシブ2（条件系）<br>
+      攻撃時 / 攻撃を受けるとき / 回避するたび など
+    </div>
 
-ATK/DEFを含まない数値は計算に影響しません
-例：
-HP50%以下 → 無視されます
-    </pre>
-  </div>
+    <h2>④ 耐久ラインについて</h2>
+    <div class="section">
+      完封ライン：ダメージ0になる敵ATK<br>
+      耐久ライン：HP内で耐えられる最大敵ATK
+    </div>
 
-  <h2>③ パッシブ判定ルール</h2>
-  <div class="box">
-    ● パッシブ1（常時系）<br>
-    基本効果 / 登場時 / ターン開始など<br><br>
+    <h2>⑤ 注意事項</h2>
+    <div class="section">
+      ・実際のゲームとは完全一致ではありません<br>
+      ・あくまで理論値・目安です
+    </div>
 
-    ● パッシブ2（条件系）<br>
-    攻撃時 / 攻撃を受けるとき / 回避するたび など
-  </div>
-
-  <h2>④ 耐久ラインについて</h2>
-  <div class="box">
-    完封ライン：ダメージ0になる敵ATK<br>
-    耐久ライン：HP内で耐えられる最大敵ATK
-  </div>
-
-  <h2>⑤ 注意事項</h2>
-  <div class="box">
-    ・実際のゲームとは完全一致ではありません<br>
-    ・あくまで理論値・目安です
-  </div>
-
-  <h2>⑥ メインページへ</h2>
-  <div class="box">
-    <a href="index.html">▶ 計算機に戻る</a>
-  </div>
+    <h2>⑥ メインページへ</h2>
+    <div class="section">
+      <a href="index.html">▶ 計算機に戻る</a>
+    </div>
+</div>
 
 </body>
 </html>

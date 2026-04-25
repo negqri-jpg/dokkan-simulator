@@ -4,187 +4,53 @@
 <meta charset="UTF-8">
 <title>コメント</title>
 
-<style>
-body {
-  background: #0f172a;
-  color: white;
-  font-family: Arial;
-  padding: 12px;
-}
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="comment.css">
 
-/* タブ */
-.tabs {
-  display: flex;
-  margin-bottom: 12px;
-}
-
-.tab {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #00ffcc;
-  background: linear-gradient(#111, #000);
-  border: 2px solid #00ff66;
-}
-
-.tab.active {
-  background: linear-gradient(#003300, #001100);
-  color: #00ff66;
-}
-
-/* 入力 */
-textarea, input {
-  width: 100%;
-  margin-top: 6px;
-  padding: 6px;
-  background: black;
-  color: #00ffcc;
-  border: 1px solid #00ff66;
-}
-
-button {
-  margin-top: 8px;
-  padding: 8px;
-  width: 100%;
-  font-weight: bold;
-}
-
-/* コメント */
-.comment {
-  border-bottom: 1px solid #333;
-  margin-top: 10px;
-  padding-bottom: 6px;
-}
-
-.name {
-  color: #00ff66;
-  font-weight: bold;
-}
-
-.time {
-  font-size: 11px;
-  color: #aaa;
-}
-</style>
 </head>
 
 <body>
+<div class="comment-container">
 
-<div class="tabs">
-  <a href="index.html" class="tab">計算</a>
-  <a href="spec.html" class="tab">使い方</a>
-  <a href="comment.html" class="tab active">コメント</a>
+  <div class="tabs">
+    <a href="index.html" class="tab">計算</a>
+    <a href="spec.html" class="tab">使い方</a>
+    <a href="comment.html" class="tab active">コメント</a>
+  </div>
+
+  <div class="list-box">
+    <h2>コメント一覧</h2>
+    <div class="button-group">
+      <button onclick="setSort('time')">時間順</button>
+      <button onclick="setSort('likes')">人気順</button>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <div class="post-box">
+    <h2>コメント</h2>
+    <input id="name" placeholder="名前(未記入ならランダムな名前)">
+    <textarea id="text"></textarea>
+    <div class="button-group">
+      <button onclick="postComment()">投稿</button>
+      <button onclick="rerollName()">名前を再抽選</button>
+    </div>
+  </div>
+
+  <div class="ng-box">
+    <h2>NGワード追加</h2>
+    <input id="ngInput" placeholder="NGワード">
+    <button onclick="addMyNG()">追加</button>
+    <div id="ngList"></div>
+    <h3>ID NG</h3>
+    <div id="ngIdList"></div>
+  </div>
+
+  
+
 </div>
 
-<h1>コメント欄</h1>
-
-<input id="name" placeholder="名前（未入力なら匿名）">
-<textarea id="text" placeholder="コメントを書く"></textarea>
-<button onclick="postComment()">投稿</button>
-
-<h2>NGワード追加</h2>
-<input id="ngInput" placeholder="NGワード">
-<button onclick="addNG()">追加</button>
-
-<h2>コメント一覧</h2>
-<div id="list"></div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyC-7N89gdb2b4sWnJt3R82jQFZedQ8ow7E",
-  authDomain: "dokkan-comment.firebaseapp.com",
-  projectId: "dokkan-comment",
-  storageBucket: "dokkan-comment.firebasestorage.app",
-  messagingSenderId: "598573061096",
-  appId: "1:598573061096:web:3c41dad20fc67aba55ca5d"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// NGワード
-let ngList = [];
-
-onSnapshot(collection(db, "ngwords"), (snapshot) => {
-  ngList = [];
-  snapshot.forEach(doc => {
-    ngList.push(doc.data().word);
-  });
-});
-
-// 投稿
-window.postComment = async function () {
-  const name = document.getElementById("name").value || "匿名";
-  const text = document.getElementById("text").value;
-
-  if (!text) return;
-
-  // NGチェック
-  for (let ng of ngList) {
-    if (ng && text.includes(ng)) {
-      alert("NGワードが含まれています");
-      return;
-    }
-  }
-
-  await addDoc(collection(db, "comments"), {
-    name,
-    text,
-    time: Date.now()
-  });
-
-  document.getElementById("text").value = "";
-};
-
-// NGワード追加
-window.addNG = async function () {
-  const word = document.getElementById("ngInput").value;
-
-  if (!word) return;
-
-  await addDoc(collection(db, "ngwords"), {
-    word
-  });
-
-  document.getElementById("ngInput").value = "";
-};
-
-// 時間フォーマット
-function formatTime(t) {
-  const d = new Date(t);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  const h = String(d.getHours()).padStart(2, "0");
-  const min = String(d.getMinutes()).padStart(2, "0");
-
-  return `${y}/${m}/${day} ${h}:${min}`;
-}
-
-// コメント表示
-onSnapshot(collection(db, "comments"), (snapshot) => {
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-
-  snapshot.forEach(doc => {
-    const c = doc.data();
-
-    list.innerHTML += `
-      <div class="comment">
-        <div class="name">${c.name}</div>
-        <div>${c.text}</div>
-        <div class="time">${formatTime(c.time)}</div>
-      </div>
-    `;
-  });
-});
-
-</script>
+<script type="module" src="comment.js"></script>
 
 </body>
 </html>

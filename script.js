@@ -120,13 +120,11 @@ function parsePassive(text) {
 // =========================
 // 必殺効果UI
 // =========================
-function toggleSuperEffectInput(type) {
-  const select = document.getElementById(
-    type === "atk" ? "superEffectSelectAtk" : "superEffectSelectDef"
-  );
-  const input = document.getElementById(
-    type === "atk" ? "superEffectCustomAtk" : "superEffectCustomDef"
-  );
+function toggleSuperEffectInput(type, stat) {
+  const select = document.getElementById(`${type}${stat === "atk" ? "AtkEffect" : "DefEffect"}`);
+  const input = document.getElementById(`${type}Custom${stat === "atk" ? "Atk" : "Def"}`);
+
+  if (!select || !input) return;
 
   input.style.display = select.value === "custom" ? "block" : "none";
 }
@@ -203,17 +201,21 @@ function calculate() {
 
   const kiBonus = Number(document.getElementById("kiBonus").value) || 1;
 
-  let superMultiplier = Number(document.getElementById("superMultiplier").value);
-  const superPowerLv = Number(document.getElementById("superPowerLv").value || 0);
-  superMultiplier += superPowerLv * 0.05;
-  const plusSuper = Number(document.getElementById("plussuperMultiplier").value) || 0;
+  // 必殺技
+  const normalCount = Number(document.getElementById("normalCount").value) || 0;
+  const ultraCount = Number(document.getElementById("ultraCount").value) || 0;
 
-  const stack = Number(document.getElementById("superStack").value) || 1;
+  const normalMultiplier = Number(document.getElementById("normalMultiplier").value);
+  const ultraMultiplier = Number(document.getElementById("ultraMultiplier").value);
 
-  const superAtk = (getSuperEffectAtk() / 100) * stack;
-  const superDef = (getSuperEffectDef() / 100) * stack;
+  const normalPlus = Number(document.getElementById("normalPlus").value) || 0;
+  const ultraPlus = Number(document.getElementById("ultraPlus").value) || 0;
 
-  const totalSuper = superMultiplier + plusSuper + superAtk;
+  const normalAtkEffect = Number(document.getElementById("normalAtkEffect").value) || 0;
+  const ultraAtkEffect = Number(document.getElementById("ultraAtkEffect").value) || 0;
+
+  const normalDefEffect = Number(document.getElementById("normalDefEffect").value) || 0;
+  const ultraDefEffect = Number(document.getElementById("ultraDefEffect").value) || 0;
 
   const passive = parsePassive(document.getElementById("passiveSkill").value);
 
@@ -223,7 +225,12 @@ function calculate() {
   const def_p1 = passive.def_p1 / 100;
   const def_p2 = passive.def_p2 / 100;
 
-  const resultAtk =
+  const critMultiplier = 1.9;
+  const effectiveMultiplier = 1.5;
+
+  
+
+  const baseCalc =
     baseAtk *
     (1 + totalLeader) *
     (1 + fieldAtk) *
@@ -232,19 +239,46 @@ function calculate() {
     (1 + supportAtk) *
     (1 + activeAtk) *
     (1 + linkAtk) *
-    kiBonus *
-    totalSuper;
+    kiBonus;
 
-  const resultDef =
-    baseDef *
-    (1 + totalLeader) *
-    (1 + fieldDef) *
-    (1 + def_p1) *
-    (1 + def_p2) *
-    (1 + supportDef) *
-    (1 + activeDef) *
-    (1 + linkDef) *
-    (1 + superDef);
+  // 必殺
+  const normalAtk =
+    baseCalc *
+    (normalMultiplier + normalPlus + normalAtkEffect / 100);
+
+  // 超必殺
+  const ultraAtk =
+    baseCalc *
+    (ultraMultiplier + ultraPlus + ultraAtkEffect / 100);
+
+  // 合計
+  const totalAtk =
+    normalAtk * normalCount +
+    ultraAtk * ultraCount;
+
+  // 会心
+  const totalCritAtk = totalAtk * critMultiplier;
+
+  // 効果抜群
+  const totalEffectiveAtk = totalAtk * effectiveMultiplier;
+    
+
+  const totalHits = normalCount + ultraCount;
+
+    const totalDefEffect =
+      (normalDefEffect / 100) * normalCount +
+      (ultraDefEffect / 100) * ultraCount;
+
+    const resultDef =
+      baseDef *
+      (1 + totalLeader) *
+      (1 + fieldDef) *
+      (1 + def_p1) *
+      (1 + def_p2) *
+      (1 + supportDef) *
+      (1 + activeDef) *
+      (1 + linkDef) *
+      (1 + totalDefEffect);
 
   // =========================
   // 耐久計算
@@ -269,15 +303,15 @@ function calculate() {
   function calcPerfectLine() {
     if (!guard && reduction === 0) return resultDef;
     if (!guard) return resultDef / (1 - reduction);
-    if (guard && reduction === 0) return (resultDef * 0.5) / 0.8;
-    return (resultDef * 0.5) / (0.8 * (1 - reduction));
+    if (guard && reduction === 0) return resultDef / (0.8 * 0.5);
+    return resultDef / (0.8 * (1 - reduction) * 0.5);
   }
 
   function calcLimitLine(hp) {
     if (!guard && reduction === 0) return resultDef + hp;
     if (!guard) return (resultDef + hp) / (1 - reduction);
-    if (guard && reduction === 0) return (hp + resultDef * 0.5) / 0.8;
-    return (hp + resultDef * 0.5) / (0.8 * (1 - reduction));
+    if (guard && reduction === 0) return (hp + resultDef) / (0.8 * 0.5);
+    return (hp + resultDef) / (0.8 * (1 - reduction) * 0.5);
   }
 
   const perfect = Math.floor(calcPerfectLine());
@@ -286,30 +320,35 @@ function calculate() {
   const hp1000 = Math.floor(calcLimitLine(1000000));
 
   document.getElementById("hpResult").innerText =
-`完封ライン: ${formatNumber(perfect)}
+    `完封ライン: ${formatNumber(perfect)}
 
-HP60万: ${formatNumber(hp600)}
-HP80万: ${formatNumber(hp800)}
-HP100万: ${formatNumber(hp1000)}`;
+    HP60万: ${formatNumber(hp600)}
+    HP80万: ${formatNumber(hp800)}
+    HP100万: ${formatNumber(hp1000)}`;
 
   // =========================
   // 表示
   // =========================
 
-  document.getElementById("resultAtk").innerText = formatNumber(Math.floor(resultAtk));
+  document.getElementById("resultAtk").innerText = formatNumber(Math.floor(totalAtk));
   document.getElementById("resultDef").innerText = formatNumber(Math.floor(resultDef));
 
   document.getElementById("detail").innerText =
-`最終ATK: 約${formatJapanese(resultAtk)}
-最終DEF: 約${formatJapanese(resultDef)}
+    `必殺: ${formatNumber(Math.floor(normalAtk))} × ${normalCount}
+    超必殺: ${formatNumber(Math.floor(ultraAtk))} × ${ultraCount}
 
-【ATK】
-足し算パッシブ: ${passive.atk_p1}%
-掛け算パッシブ: ${passive.atk_p2}%
+    合計: ${formatNumber(Math.floor(totalAtk))}
+    会心時: ${formatNumber(Math.floor(totalCritAtk))}
+    効果抜群: ${formatNumber(Math.floor(totalEffectiveAtk))}
+    両方: ${formatNumber(Math.floor(totalBothAtk))}
 
-【DEF】
-足し算パッシブ: ${passive.def_p1}%
-掛け算パッシブ: ${passive.def_p2}%`;
+    最終DEF: ${formatNumber(Math.floor(resultDef))}
 
-console.log(passive);
+    【ATK】
+    足し算パッシブ: ${passive.atk_p1}%
+    掛け算パッシブ: ${passive.atk_p2}%
+
+    【DEF】
+    足し算パッシブ: ${passive.def_p1}%
+    掛け算パッシブ: ${passive.def_p2}%`;
 }

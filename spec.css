@@ -1,0 +1,82 @@
+body {
+  color: #e0ffe0;
+}
+
+/* タイトル */
+h1 {
+  font-size: 28px;
+  text-align: center;
+  margin: 20px 0;
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+/* セクションカード */
+.section {
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid #00ff99;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: 0 0 10px #00ff99;
+  backdrop-filter: blur(4px);
+}
+
+/* 見出し */
+.section h2 {
+  color: #00ffcc;
+  border-left: 4px solid #00ffcc;
+  padding-left: 8px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* 本文 */
+.section p,
+.section li {
+  line-height: 1.9;
+  color: #ccffcc;
+}
+
+/* リスト */
+.section ul {
+  padding-left: 20px;
+}
+
+.section li {
+  margin-bottom: 6px;
+}
+
+/* コードブロック */
+.code {
+  background: #111;
+  border: 1px solid #00ff99;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: monospace;
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
+/* 強調 */
+.highlight {
+  color: #00ffcc;
+  font-weight: bold;
+}
+
+/* 区切り線 */
+hr {
+  border: none;
+  border-top: 1px solid #00ff99;
+  margin: 20px 0;
+}
+
+.spec-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+body::before {
+  opacity: 0.08;
+}

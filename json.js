@@ -20,15 +20,19 @@ function saveToFile() {
 
     kiBonus: document.getElementById("kiBonus").value,
 
-    superMultiplier: document.getElementById("superMultiplier").value,
-    superPowerLv: document.getElementById("superPowerLv").value,
-    superStack: document.getElementById("superStack").value,
-    plussuperMultiplier: document.getElementById("plussuperMultiplier").value,
+    // 必殺
+    normalMultiplier: document.getElementById("normalMultiplier").value,
+    normalCount: document.getElementById("normalCount").value,
+    normalAtkEffect: document.getElementById("normalAtkEffect").value,
+    normalDefEffect: document.getElementById("normalDefEffect").value,
+    normalPlus: document.getElementById("normalPlus").value,
 
-    superEffectAtk: document.getElementById("superEffectSelectAtk").value,
-    superEffectAtkCustom: document.getElementById("superEffectCustomAtk").value,
-    superEffectDef: document.getElementById("superEffectSelectDef").value,
-    superEffectDefCustom: document.getElementById("superEffectCustomDef").value,
+    // 超必殺
+    ultraMultiplier: document.getElementById("ultraMultiplier").value,
+    ultraCount: document.getElementById("ultraCount").value,
+    ultraAtkEffect: document.getElementById("ultraAtkEffect").value,
+    ultraDefEffect: document.getElementById("ultraDefEffect").value,
+    ultraPlus: document.getElementById("ultraPlus").value,
 
     passive: document.getElementById("passiveSkill").value,
 
@@ -75,16 +79,18 @@ function loadFromFile() {
 
     document.getElementById("kiBonus").value = data.kiBonus || "1.5";
 
-    document.getElementById("superMultiplier").value = data.superMultiplier || "";
-    document.getElementById("superPowerLv").value = data.superPowerLv || "0";
-    document.getElementById("superStack").value = data.superStack || "1";
-    document.getElementById("plussuperMultiplier").value = data.plussuperMultiplier || "0";
+    document.getElementById("normalMultiplier").value = data.normalMultiplier || "";
+    document.getElementById("normalCount").value = data.normalCount || "0";
+    document.getElementById("normalAtkEffect").value = data.normalAtkEffect || "0";
+    document.getElementById("normalDefEffect").value = data.normalDefEffect || "0";
+    document.getElementById("normalPlus").value = data.normalPlus || "0";
 
-    document.getElementById("superEffectSelectAtk").value = data.superEffectAtk || "0";
-    document.getElementById("superEffectCustomAtk").value = data.superEffectAtkCustom || "";
-    document.getElementById("superEffectSelectDef").value = data.superEffectDef || "0";
-    document.getElementById("superEffectCustomDef").value = data.superEffectDefCustom || "";
-
+    document.getElementById("ultraMultiplier").value = data.ultraMultiplier || "";
+    document.getElementById("ultraCount").value = data.ultraCount || "0";
+    document.getElementById("ultraAtkEffect").value = data.ultraAtkEffect || "0";
+    document.getElementById("ultraDefEffect").value = data.ultraDefEffect || "0";
+    document.getElementById("ultraPlus").value = data.ultraPlus || "0";
+    
     document.getElementById("passiveSkill").value = data.passive || "";
 
     document.getElementById("damageReduction").value = data.damageReduction || "0";
