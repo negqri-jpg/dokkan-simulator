@@ -126,52 +126,22 @@ function toggleSuperEffectInput(type, stat) {
 
   if (!select || !input) return;
 
-  input.style.display = select.value === "custom" ? "block" : "none";
+  input.classList.toggle("hidden", select.value !== "custom");
 }
 
-function getSuperEffectAtk() {
-  const v = document.getElementById("superEffectSelectAtk").value;
-  if (v === "custom") {
-    return Number(document.getElementById("superEffectCustomAtk").value) || 0;
-  }
-  return Number(v) || 0;
-}
-
-function getSuperEffectDef() {
-  const v = document.getElementById("superEffectSelectDef").value;
-  if (v === "custom") {
-    return Number(document.getElementById("superEffectCustomDef").value) || 0;
-  }
-  return Number(v) || 0;
+function getSuperEffectValue(type, stat) {
+  const select = document.getElementById(`${type}${stat === "atk" ? "AtkEffect" : "DefEffect"}`);
+  const custom = document.getElementById(`${type}Custom${stat === "atk" ? "Atk" : "Def"}`);
+  if (!select) return 0;
+  if (select.value === "custom") return Number(custom?.value) || 0;
+  return Number(select.value) || 0;
 }
 
 // =========================
 // 表示
 // =========================
 function formatNumber(num) {
-  return num.toLocaleString();
-}
-
-function formatJapanese(num) {
-  const units = [
-    { value: 1e16, label: "京" },
-    { value: 1e12, label: "兆" },
-    { value: 1e8, label: "億" },
-    { value: 1e4, label: "万" }
-  ];
-
-  let result = "";
-  let remaining = Math.floor(num / 10000) * 10000;
-
-  for (const u of units) {
-    if (remaining >= u.value) {
-      const n = Math.floor(remaining / u.value);
-      remaining %= u.value;
-      result += n + u.label;
-    }
-  }
-
-  return result || "0";
+  return Number.isFinite(num) ? num.toLocaleString() : "0";
 }
 
 // =========================
@@ -202,8 +172,8 @@ function calculate() {
   const kiBonus = Number(document.getElementById("kiBonus").value) || 1;
 
   // 必殺技
-  const normalCount = Number(document.getElementById("normalCount").value) || 0;
-  const ultraCount = Number(document.getElementById("ultraCount").value) || 0;
+  const normalCount = Math.max(0, Number(document.getElementById("normalCount").value) || 0);
+  const ultraCount = Math.max(0, Number(document.getElementById("ultraCount").value) || 0);
 
   const normalMultiplier = Number(document.getElementById("normalMultiplier").value);
   const ultraMultiplier = Number(document.getElementById("ultraMultiplier").value);
@@ -211,11 +181,11 @@ function calculate() {
   const normalPlus = Number(document.getElementById("normalPlus").value) || 0;
   const ultraPlus = Number(document.getElementById("ultraPlus").value) || 0;
 
-  const normalAtkEffect = Number(document.getElementById("normalAtkEffect").value) || 0;
-  const ultraAtkEffect = Number(document.getElementById("ultraAtkEffect").value) || 0;
+  const normalAtkEffect = getSuperEffectValue("normal", "atk");
+  const ultraAtkEffect = getSuperEffectValue("ultra", "atk");
 
-  const normalDefEffect = Number(document.getElementById("normalDefEffect").value) || 0;
-  const ultraDefEffect = Number(document.getElementById("ultraDefEffect").value) || 0;
+  const normalDefEffect = getSuperEffectValue("normal", "def");
+  const ultraDefEffect = getSuperEffectValue("ultra", "def");
 
   const passive = parsePassive(document.getElementById("passiveSkill").value);
 
@@ -262,8 +232,7 @@ function calculate() {
   // 効果抜群
   const totalEffectiveAtk = totalAtk * effectiveMultiplier;
     
-
-  const totalHits = normalCount + ultraCount;
+  const totalBothAtk = totalAtk * critMultiplier * effectiveMultiplier;
 
     const totalDefEffect =
       (normalDefEffect / 100) * normalCount +
@@ -350,5 +319,19 @@ function calculate() {
 
     【DEF】
     足し算パッシブ: ${passive.def_p1}%
-    掛け算パッシブ: ${passive.def_p2}%`;
+	  掛け算パッシブ: ${passive.def_p2}%`;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("calculateButton")?.addEventListener("click", calculate);
+
+  ["normal", "ultra"].forEach(type => {
+    ["atk", "def"].forEach(stat => {
+      const select = document.getElementById(`${type}${stat === "atk" ? "AtkEffect" : "DefEffect"}`);
+      if (!select) return;
+
+      select.addEventListener("change", () => toggleSuperEffectInput(type, stat));
+      toggleSuperEffectInput(type, stat);
+    });
+  });
+});

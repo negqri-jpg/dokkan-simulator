@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
   <title>ドッカンバトル ATK/DEFシミュレーター</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="icon.png">
@@ -50,26 +51,26 @@
 
     <label>フィールド(%)</label>
     <div class="row">
-      <input id="fieldAtk" placeholder="ATK">
-      <input id="fieldDef" placeholder="DEF">
+      <input type="number" id="fieldAtk" placeholder="ATK">
+      <input type="number" id="fieldDef" placeholder="DEF">
     </div>
 
     <label>サポート(%)</label>
     <div class="row">
-      <input id="supportAtk" placeholder="ATK">
-      <input id="supportDef" placeholder="DEF">
+      <input type="number" id="supportAtk" placeholder="ATK">
+      <input type="number" id="supportDef" placeholder="DEF">
     </div>
 
     <label>アクティブ(%)</label>
     <div class="row">
-      <input id="activeAtk" placeholder="ATK">
-      <input id="activeDef" placeholder="DEF">
+      <input type="number" id="activeAtk" placeholder="ATK">
+      <input type="number" id="activeDef" placeholder="DEF">
     </div>
 
     <label>リンク(%)</label>
     <div class="row">
-      <input id="linkAtk" placeholder="ATK">
-      <input id="linkDef" placeholder="DEF">
+      <input type="number" id="linkAtk" placeholder="ATK">
+      <input type="number" id="linkDef" placeholder="DEF">
     </div>
 
     <label>気力倍率</label>
@@ -104,7 +105,7 @@
     </select>
 
     <label>必殺技効果(ATK)</label>
-    <select id="normalAtkEffect" onchange="toggleSuperEffectInput('normal','atk')">
+    <select id="normalAtkEffect">
       <option value="0">なし</option>
       <option value="20">ATK20%UP</option>
       <option value="30">ATK30%UP</option>
@@ -112,10 +113,10 @@
       <option value="100">ATK100%UP</option>
       <option value="custom">自由</option>
     </select>
-    <input id="normalCustomAtk" style="display:none;">
+    <input type="number" id="normalCustomAtk" class="hidden" placeholder="自由入力(%)">
 
     <label>必殺技効果(DEF)</label>
-    <select id="normalDefEffect" onchange="toggleSuperEffectInput('normal','def')">
+    <select id="normalDefEffect">
       <option value="0">なし</option>
       <option value="20">DEF20%UP</option>
       <option value="30">DEF30%UP</option>
@@ -123,10 +124,10 @@
       <option value="100">DEF100%UP</option>
       <option value="custom">自由</option>
     </select>
-    <input id="normalCustomDef" style="display:none;">
+    <input type="number" id="normalCustomDef" class="hidden" placeholder="自由入力(%)">
 
     <label>必殺回数</label>
-    <input id="normalCount" value="0">
+    <input type="number" id="normalCount" value="0" min="0">
 
     <label>追加効果</label>
     <select id="normalPlus">
@@ -158,7 +159,7 @@
     </select>
 
     <label>必殺技効果(ATK)</label>
-    <select id="ultraAtkEffect" onchange="toggleSuperEffectInput('ultra','atk')">
+    <select id="ultraAtkEffect">
       <option value="0">なし</option>
       <option value="20">ATK20%UP</option>
       <option value="30">ATK30%UP</option>
@@ -166,10 +167,10 @@
       <option value="100">ATK100%UP</option>
       <option value="custom">自由</option>
     </select>
-    <input id="ultraCustomAtk" style="display:none;">
+    <input type="number" id="ultraCustomAtk" class="hidden" placeholder="自由入力(%)">
 
     <label>必殺技効果(DEF)</label>
-    <select id="ultraDefEffect" onchange="toggleSuperEffectInput('ultra','def')">
+    <select id="ultraDefEffect">
       <option value="0">なし</option>
       <option value="20">DEF20%UP</option>
       <option value="30">DEF30%UP</option>
@@ -177,10 +178,10 @@
       <option value="100">DEF100%UP</option>
       <option value="custom">自由</option>
     </select>
-    <input id="ultraCustomDef" style="display:none;">
+    <input type="number" id="ultraCustomDef" class="hidden" placeholder="自由入力(%)">
 
     <label>必殺回数</label>
-    <input id="ultraCount" value="0">
+    <input type="number" id="ultraCount" value="0" min="0">
 
     <label>追加効果</label>
     <select id="ultraPlus">
@@ -194,9 +195,9 @@
   <div class="card">
     <div class="card-title">リーダー</div>
     <label>自前リーダー(%)</label>  
-    <input id="leaderSkill" placeholder="例：170">
+    <input type="number" id="leaderSkill" placeholder="例：170">
     <label>フレンドリーダー(%)</label> 
-    <input id="friendLeaderSkill" placeholder="例：220">
+    <input type="number" id="friendLeaderSkill" placeholder="例：220">
   </div>
 
   <!-- パッシブ -->
@@ -207,7 +208,7 @@
 
   <!-- ボタン -->
   <div class="card full">
-    <button onclick="calculate()">計算</button>
+    <button type="button" id="calculateButton">計算</button>
   </div>
 
   <!-- 結果 -->
@@ -235,13 +236,13 @@
   <div class="file-area">
 
   <div class="file-buttons">
-    <button onclick="saveToFile()" class="btn save">
+    <button type="button" id="saveButton" class="btn save">
       💾 JSON保存
     </button>
 
     <label for="fileLoader" class="btn load">
       📂 読み込む
-      <input type="file" id="fileLoader" hidden onchange="loadFromFile()">
+      <input type="file" id="fileLoader" accept="application/json" hidden>
     </label>
   </div>
 

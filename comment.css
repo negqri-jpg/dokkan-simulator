@@ -1,187 +1,196 @@
 .comment-container {
-  max-width: 700px;
+  width: min(calc(100vw - 24px), 760px);
   margin: 0 auto;
-  padding: 10px;
-}
-
-@media (max-width: 600px) {
-  .comment-container {
-    padding: 10px;
-  }
-}
-  
-
-.post-box {
-  background: rgba(0,0,0,0.85);
-  border: 1px solid #00ff99;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 8px;
-  padding-top: 10px;
-}
-
-.ng-box {
-  background: rgba(0,0,0,0.85);
-  border: 1px solid #ffaa00;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 20px;
-  max-height: 400px;
-  overflow-y: auto;
-  margin-top: 20px;
-  opacity: 0.8;
-}
-
-@media (max-width: 600px) {
-  .ng-box {
-    max-height: 250px;
-  }
 }
 
 .post-box,
+.ng-box,
+.list-box {
+  min-width: 0;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.post-box {
+  border: 1px solid #00ff99;
+}
+
 .ng-box {
-  padding: 14px;
+  border: 1px solid #ffaa00;
+  max-height: 400px;
+  overflow-y: auto;
+  opacity: 0.92;
 }
 
 .list-box {
-  background: rgba(0,0,0,0.85);
   border: 1px solid #00ccff;
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 0;
+}
+
+.post-box h2,
+.ng-box h2,
+.list-box h2,
+.ng-box h3 {
+  margin: 0 0 10px;
+  color: #00ffcc;
+  line-height: 1.35;
 }
 
 .comment {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  border-left: 3px solid #00ffcc;
-  background: rgba(0,0,0,0.6);
+  gap: 8px;
+  min-width: 0;
   border: 1px solid #00ff99;
+  border-left: 3px solid #00ffcc;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.6);
   padding: 12px;
   margin-bottom: 12px;
-  border-radius: 10px;
-}
-
-
-.comment .name {
-  font-weight: bold;
-  color: #00ffcc;
-}
-
-.comment .time {
-  font-size: 12px;
-  opacity: 0.6;
+  overflow-wrap: anywhere;
 }
 
 .comment:hover {
   box-shadow: 0 0 10px #00ff99;
 }
 
-input, textarea {
-  width: 100%;
-  background: #111;
-  border: 1px solid #00ff99;
+.comment.mine {
+  border-color: #ff4d4d;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.85);
+}
+
+.comment .text {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.comment .name {
   color: #00ffcc;
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 6px;
+  font-weight: bold;
+}
+
+.comment .time {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.comment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
 textarea {
-  height: 100px;
-  resize: none;
-  margin-bottom: 12px;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #00ccff, #0066ff);
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-  margin-top: 20px;
+  height: 110px;
+  min-height: 110px;
   margin-bottom: 10px;
-  box-shadow: 0 0 10px rgba(0, 200, 255, 0.6);
 }
 
 .button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
   margin-top: 10px;
 }
 
-button:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px #00ccff;
+.button-group button,
+.ng-box > button {
+  margin: 0;
 }
 
-button:last-child {
-  background: linear-gradient(90deg, #00ffcc, #00cc99);
+.button-group button.is-active {
+  border-color: #00ffcc;
+  box-shadow: 0 0 12px rgba(0, 255, 204, 0.8);
+}
+
+#rerollButton {
+  background: linear-gradient(90deg, #00ffcc, #00aa88);
+  border-color: #00ffcc;
+  color: #001a14;
+}
+
+.like,
+.ng-id-button,
+.ng-item button {
+  width: auto;
+  min-height: 34px;
+  padding: 6px 12px;
+  font-size: 13px;
 }
 
 .like {
-  cursor: pointer;
-  display: inline-block;
-  margin-top: 6px;
-  padding: 4px 8px;
-  border-radius: 999px;
   border: 1px solid #00ffcc;
+  background: #001a1a;
   color: #00ffcc;
 }
 
 .like:hover {
-  opacity: 0.7;
-  transform: scale(1.01);
-}
-
-.like:active {
-  transform: scale(0.95);
+  opacity: 0.85;
 }
 
 .like.liked {
-  color: gray;
-  border-color: gray;
+  border-color: #777;
+  color: #999;
 }
 
-.comment.mine {
-  border: 2px solid red;
-  box-shadow: 0 0 10px red;
+.ng-id-button,
+.ng-item button {
+  border-color: #ff7777;
+  background: linear-gradient(90deg, #ff5555, #cc0000);
+  color: #fff;
 }
 
 .ng-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background: rgba(0,0,0,0.6);
+  gap: 10px;
+  min-width: 0;
+  background: rgba(0, 0, 0, 0.6);
   border: 1px solid #ffaa00;
   border-radius: 8px;
-
   padding: 8px 12px;
   margin-bottom: 8px;
 }
 
-.ng-item button {
-  width: auto;
-  padding: 4px 10px;
-  margin: 0;
-
-  background: linear-gradient(90deg, #ff5555, #cc0000);
-  border-radius: 999px;
-  font-size: 12px;
-}
-
 .ng-item span {
+  min-width: 0;
   color: #ffaa00;
   font-weight: bold;
+  overflow-wrap: anywhere;
 }
 
 .ng-box input {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .comment-container {
+    width: min(calc(100vw - 16px), 760px);
+  }
+
+  .post-box,
+  .ng-box,
+  .list-box {
+    padding: 12px;
+  }
+
+  .ng-box {
+    max-height: 280px;
+  }
+
+  .button-group {
+    grid-template-columns: 1fr;
+  }
+
+  .comment-actions {
+    align-items: stretch;
+  }
+
+  .like,
+  .ng-id-button {
+    width: 100%;
+  }
 }

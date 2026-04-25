@@ -1,326 +1,279 @@
-body {
-  margin: 0;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  font-family: 'Arial Black', sans-serif;
-  background: url('方眼紙緑.png'); /* グリッド風 */
-  background-size: cover;
-  color: white;
-  padding-top: 10px;
+:root {
+  --green: #00ff66;
+  --green-soft: #00ff99;
+  --cyan: #00ffcc;
+  --panel: rgba(0, 0, 0, 0.85);
+  --shadow-green: 0 0 10px rgba(0, 255, 102, 0.85);
 }
 
-/* ===== レイアウト ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-weight: bold;
+  letter-spacing: 0;
+  font-family: "Arial Black", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: #001400 url("方眼紙緑.png") center / cover fixed;
+  color: white;
+  padding: 16px 0 24px;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--cyan);
+}
+
+button,
+input,
+select,
+textarea {
+  min-width: 0;
+  font: inherit;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: min(calc(100vw - 24px), 1100px);
+  margin: 0 auto 12px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 8px;
+  border: 2px solid var(--green);
+  background: #000;
+  color: var(--cyan);
+  font-size: 14px;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: inset 0 0 8px rgba(0, 255, 102, 0.25);
+}
+
+.tab.active {
+  background: #003300;
+  color: var(--green);
+  box-shadow: var(--shadow-green), inset 0 0 8px rgba(0, 255, 102, 0.35);
+}
+
 .container {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  padding: 12px;
-  max-width: 1100px;
-  margin: auto;
+  width: min(calc(100vw - 24px), 1100px);
+  margin: 0 auto;
 }
 
-@media (min-width: 768px) {
-  .container {
-    grid-template-columns: 1fr 1fr;
-  }
-  .full {
-    grid-column: span 2;
-  }
+.container > * {
+  min-width: 0;
 }
 
-/* ===== ドッカンカード ===== */
+h1,
+h2 {
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
 .card {
+  min-width: 0;
   position: relative;
-  background: rgba(0, 0, 0, 0.85);
-  border: 2px solid #00ff66;
-  box-shadow:
-    0 0 10px #00ff66,
-    inset 0 0 10px rgba(0,255,100,0.3);
-  padding: 10px;
-  width: 100%;
-  box-sizing: border-box;
+  background: var(--panel);
+  border: 2px solid var(--green);
+  border-radius: 8px;
+  box-shadow: var(--shadow-green), inset 0 0 10px rgba(0, 255, 100, 0.3);
+  padding: 12px;
+  overflow: hidden;
 }
 
-/* 斜めカット */
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background: black;
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
-}
-
-/* タイトル */
 .card-title {
-  color: #00ff66;
+  color: var(--green);
   font-size: 14px;
-  font-weight: bold;
-  text-shadow: 0 0 5px #00ff66;
-  margin-bottom: 6px;
+  line-height: 1.4;
+  margin-bottom: 8px;
 }
 
-/* 入力 */
-input, select, textarea {
+label {
+  display: block;
+  margin: 10px 0 4px;
+  color: #d7ffe6;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+input,
+select,
+textarea {
   width: 100%;
-  background: black;
-  border: 1px solid #00ff66;
-  color: #00ffcc;
-  padding: 6px;
-  font-weight: bold;
+  max-width: 100%;
+  border: 1px solid var(--green);
+  border-radius: 6px;
+  background: #050505;
+  color: var(--cyan);
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.3;
 }
 
-/* Chrome, Safari系 */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+textarea {
+  min-height: 120px;
+  resize: vertical;
 }
 
-input[type="number"] {
-  appearance: textfield;       /* 標準 */
-  -moz-appearance: textfield;  /* Firefox */
+.hidden {
+  display: none !important;
 }
 
-/* 横並び */
 .row {
-  display: flex;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
   margin: 4px 0;
 }
 
-@media (max-width: 600px) {
-  .row {
-    flex-direction: column;
-  }
-}
-
-/* ===== ボタン（出発風） ===== */
-
-button {
+button,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 14px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #00eaff;
-
-  text-transform: uppercase;
-  letter-spacing: 2px;
-
-  background: radial-gradient(circle, #00aaff, #004488);
+  min-height: 44px;
+  padding: 12px 14px;
   border: 2px solid #00eaff;
-  border-radius: 40px;
-
-  box-shadow:
-    0 0 15px #00eaff,
-    inset 0 0 10px rgba(255,255,255,0.4);
-}
-
-@media (max-width: 600px) {
-  button {
-    padding: 10px;
-    font-size: 14px;
-  }
-}
-
-
-/* ===== 結果 ===== */
-.result {
+  border-radius: 999px;
+  background: radial-gradient(circle, #00aaff, #004488);
+  color: #dffcff;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1.2;
   text-align: center;
-  background: black;
-  border: 2px solid yellow;
-  box-shadow: 0 0 10px yellow;
-  padding: 10px;
+  text-decoration: none;
 }
 
-#resultAtk {
-  color: orange;
-  font-size: 26px;
-  text-shadow: 0 0 6px orange;
+button:hover,
+.btn:hover {
+  filter: brightness(1.1);
 }
 
-#resultDef {
-  color: lime;
-  font-size: 26px;
-  text-shadow: 0 0 6px lime;
-}
-
+.result,
+#hpResult,
 #detail {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #aaa;
-  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-/* ===== 耐久 ===== */
+#resultAtk,
+#resultDef {
+  color: var(--cyan);
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+pre,
 #hpResult {
-  margin-top: 8px;
-  color: #00ffcc;
-  font-size: 13px;
-  text-shadow: 0 0 4px #00ffcc;
-}
-
-/* ===== textarea ===== */
-textarea {
-  min-height: 180px;
-  resize: vertical;
-  line-height: 1.4;
+  white-space: pre-wrap;
+  line-height: 1.6;
 }
 
 .dokkan-check {
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
-  font-weight: bold;
+  width: max-content;
+  max-width: 100%;
 }
 
-/* 元のチェックボックスを消す */
 .dokkan-check input {
+  width: auto;
+  accent-color: var(--green);
+}
+
+.dokkan-check .box {
   display: none;
 }
 
-/* 見た目の箱 */
-.dokkan-check .box {
-  width: 36px;
-  height: 18px;
-  border-radius: 20px;
-  border: 2px solid #00ff66;
-  background: black;
-  box-shadow: 0 0 6px #00ff66;
-  position: relative;
-}
-
-/* チェック時 */
-.dokkan-check input:checked + .box {
-  background: linear-gradient(#00ff66, #008844);
-  box-shadow: 0 0 10px #00ff66;
-}
-
-/* チェックマーク */
-.dokkan-check input:checked + .box::after {
-  content: "";
-  position: absolute;
-  left: 20px;
-  top: 1px;
-  width: 5px;
-  height: 10px;
-  border: solid black;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.tab {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-
-  font-weight: bold;
-  text-decoration: none;
-  color: #00ffcc;
-
-  background: linear-gradient(#111, #000);
-  border: 2px solid #00ff66;
-
-  box-shadow:
-    0 0 6px #00ff66,
-    inset 0 0 6px rgba(0,255,100,0.2);
-
-  position: relative;
-}
-
-/* 選択中 */
-.tab.active {
-  background: linear-gradient(#003300, #001100);
-  color: #00ff66;
-  box-shadow:
-    0 0 12px #00ff66,
-    inset 0 0 10px rgba(0,255,100,0.5);
-}
-
-/* 斜めカット */
-.tab::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-width: 0 0 18px 18px;
-  border-style: solid;
-  border-color: transparent transparent black transparent;
-}
-
-/* 押した感 */
-.tab:active {
-  transform: scale(0.95);
-}
-
-.file-btn {
-  display: inline-block;
-  padding: 12px 20px;
-  margin-top: 8px;
-
-  background: linear-gradient(180deg, #1e90ff, #0055aa);
-  color: white;
-  font-weight: bold;
-
-  border-radius: 30px;
-  border: 2px solid #00ffff;
-
-  box-shadow: 0 0 10px #00ffff;
-  cursor: pointer;
-  text-align: center;
-}
-
 .file-area {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  grid-column: 1 / -1;
+  min-width: 0;
 }
 
-/* ボタン列 */
 .file-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
-/* 共通ボタン */
-.btn {
-  flex: 1;
-  padding: 14px;
-  border-radius: 30px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-}
-
-/* 保存 */
-.btn.save {
-  background: linear-gradient(180deg, #ff9900, #cc5500);
-  border: 2px solid #ffaa00;
-  box-shadow: 0 0 10px #ffaa00;
-}
-
-/* 読み込み */
-.btn.load {
-  background: linear-gradient(180deg, #1e90ff, #0055aa);
-  border: 2px solid #00ffff;
-  box-shadow: 0 0 10px #00ffff;
-}
-
-/* ファイル名 */
 .file-name-box {
-  background: black;
-  border: 1px solid #00ff66;
-  padding: 8px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid var(--green-soft);
   border-radius: 8px;
-  text-align: center;
-  color: #00ffcc;
+  background: rgba(0, 0, 0, 0.72);
+  color: var(--cyan);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .full {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding-top: 10px;
+    background-attachment: scroll;
+  }
+
+  .tabs,
+  .container {
+    width: min(calc(100vw - 16px), 1100px);
+  }
+
+  .tabs {
+    gap: 6px;
+  }
+
+  .tab {
+    min-height: 42px;
+    padding: 9px 4px;
+    font-size: 13px;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .row,
+  .file-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  button,
+  .btn {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  #resultAtk,
+  #resultDef {
+    font-size: 20px;
+  }
 }

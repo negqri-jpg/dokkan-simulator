@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com; img-src 'self' data:; style-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>コメント</title>
 
 <link rel="stylesheet" href="style.css">
@@ -11,19 +12,19 @@
 </head>
 
 <body>
-<div class="comment-container">
+<div class="tabs">
+  <a href="index.html" class="tab">計算</a>
+  <a href="spec.html" class="tab">使い方</a>
+  <a href="comment.html" class="tab active">コメント</a>
+</div>
 
-  <div class="tabs">
-    <a href="index.html" class="tab">計算</a>
-    <a href="spec.html" class="tab">使い方</a>
-    <a href="comment.html" class="tab active">コメント</a>
-  </div>
+<div class="comment-container">
 
   <div class="list-box">
     <h2>コメント一覧</h2>
     <div class="button-group">
-      <button onclick="setSort('time')">時間順</button>
-      <button onclick="setSort('likes')">人気順</button>
+      <button type="button" data-sort="time">時間順</button>
+      <button type="button" data-sort="likes">人気順</button>
     </div>
     <div id="list"></div>
   </div>
@@ -33,15 +34,15 @@
     <input id="name" placeholder="名前(未記入ならランダムな名前)">
     <textarea id="text"></textarea>
     <div class="button-group">
-      <button onclick="postComment()">投稿</button>
-      <button onclick="rerollName()">名前を再抽選</button>
+      <button type="button" id="postButton">投稿</button>
+      <button type="button" id="rerollButton">名前を再抽選</button>
     </div>
   </div>
 
   <div class="ng-box">
     <h2>NGワード追加</h2>
     <input id="ngInput" placeholder="NGワード">
-    <button onclick="addMyNG()">追加</button>
+    <button type="button" id="addNgButton">追加</button>
     <div id="ngList"></div>
     <h3>ID NG</h3>
     <div id="ngIdList"></div>
