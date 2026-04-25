@@ -6,6 +6,7 @@ body {
   background: url('方眼紙緑.png'); /* グリッド風 */
   background-size: cover;
   color: white;
+  padding-top: 10px;
 }
 
 /* ===== レイアウト ===== */
