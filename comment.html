@@ -8,20 +8,21 @@
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="comment.css">
+<link rel="icon" href="icon.png">
 
 </head>
 
 <body>
-<div class="tabs">
+<nav class="tabs" aria-label="メインナビゲーション">
   <a href="index.html" class="tab">計算</a>
-  <a href="spec.html" class="tab">使い方</a>
-  <a href="comment.html" class="tab active">コメント</a>
-</div>
+  <a href="spec.html" class="tab">使い方・計算式</a>
+  <a href="comment.html" class="tab active" aria-current="page">コメント</a>
+</nav>
 
-<div class="comment-container">
+<main class="comment-container">
 
   <div class="list-box">
-    <h2>コメント一覧</h2>
+    <h1>コメント</h1>
     <div class="button-group">
       <button type="button" data-sort="time">時間順</button>
       <button type="button" data-sort="likes">人気順</button>
@@ -30,9 +31,11 @@
   </div>
 
   <div class="post-box">
-    <h2>コメント</h2>
-    <input id="name" placeholder="名前(未記入ならランダムな名前)">
-    <textarea id="text"></textarea>
+    <h2>投稿する</h2>
+    <label for="name">名前</label>
+    <input id="name" maxlength="24" placeholder="未記入ならランダムな名前">
+    <label for="text">コメント（200文字以内）</label>
+    <textarea id="text" maxlength="200"></textarea>
     <div class="button-group">
       <button type="button" id="postButton">投稿</button>
       <button type="button" id="rerollButton">名前を再抽選</button>
@@ -41,7 +44,8 @@
 
   <div class="ng-box">
     <h2>NGワード追加</h2>
-    <input id="ngInput" placeholder="NGワード">
+    <label for="ngInput">非表示にする語句</label>
+    <input id="ngInput" maxlength="40" placeholder="NGワード">
     <button type="button" id="addNgButton">追加</button>
     <div id="ngList"></div>
     <h3>ID NG</h3>
@@ -50,7 +54,7 @@
 
   
 
-</div>
+</main>
 
 <script type="module" src="comment.js"></script>
 

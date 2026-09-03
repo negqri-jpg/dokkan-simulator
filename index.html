@@ -4,258 +4,134 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
-  <title>ドッカンバトル ATK/DEFシミュレーター</title>
+  <title>ATK / DEF シミュレーター</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="icon.png">
+  <script src="script.js" defer></script>
+  <script src="json.js" defer></script>
 </head>
 <body>
-
-<div class="tabs">
-  <a href="index.html" class="tab active">計算</a>
-  <a href="spec.html" class="tab">使い方</a>
+<nav class="tabs" aria-label="メインナビゲーション">
+  <a href="index.html" class="tab active" aria-current="page">計算</a>
+  <a href="spec.html" class="tab">使い方・計算式</a>
   <a href="comment.html" class="tab">コメント</a>
-</div>
-
-<div class="container">
-
-  <h2 class="full">ドッカンバトル ATK/DEFシミュレーター</h2>
-
-  <div class="card">
-    <div class="card-title">キャラクター</div>
-
-    <label>二つ名</label>
-    <input type="text" id="nickname" placeholder="例：怒りの大反撃">
-
-    <label>名前</label>
-    <input type="text" id="charName" placeholder="例：孫悟空">
-  </div>
-  
-  <!-- 基礎 -->
-  <div class="card">
-    <div class="card-title">基礎ステータス</div>
-
-    <label>基礎ATK</label>
-    <input type="number" id="baseAtk" min="1" max="99999" placeholder="例：20000">
-
-    <label>基礎DEF</label>
-    <input type="number" id="baseDef" min="1" max="99999" placeholder="例：15000">
-
-    <label>必殺技威力UP（Lv）</label>
-    <input type="number" id="superPowerLv" value="0">
-
-  </div>
-
-  <!-- バフ -->
-  <div class="card">
-    <div class="card-title">バフ(%)</div>
-
-    <label>フィールド(%)</label>
-    <div class="row">
-      <input type="number" id="fieldAtk" placeholder="ATK">
-      <input type="number" id="fieldDef" placeholder="DEF">
+</nav>
+<header class="page-header">
+  <img src="icon.png" alt="" width="46" height="46">
+  <div><h1>ATK / DEF シミュレーター</h1><p>ドッカンバトル</p></div>
+</header>
+<main class="container">
+<form id="calculatorForm" class="form-sections">
+  <section class="section">
+    <div class="section-heading"><h2>キャラクター・基礎値</h2><a href="#results">計算結果へ</a></div>
+    <div class="field-grid">
+      <label for="nickname">二つ名<input type="text" id="nickname" maxlength="100" placeholder="例：謎の仙人"></label>
+      <label for="charName">名前<input type="text" id="charName" maxlength="100" placeholder="例：ジャッキー・チュン"></label>
+      <label for="baseAtk">基礎ATK<input type="number" id="baseAtk" value="" min="0" max="999999" step="1" placeholder="20000"></label>
+      <label for="baseDef">基礎DEF<input type="number" id="baseDef" value="" min="0" max="999999" step="1" placeholder="15000"></label>
+      <label for="leaderSkill">自前リーダー（%）<input type="number" id="leaderSkill" value="220" min="0" max="1000000" step="0.01"></label>
+      <label for="friendLeaderSkill">フレンドリーダー（%）<input type="number" id="friendLeaderSkill" value="220" min="0" max="1000000" step="0.01"></label>
     </div>
-
-    <label>サポート(%)</label>
-    <div class="row">
-      <input type="number" id="supportAtk" placeholder="ATK">
-      <input type="number" id="supportDef" placeholder="DEF">
+  </section>
+  <section class="section">
+    <h2>補正倍率（%）</h2>
+    <div class="buff-grid"><span></span><span class="col-heading">ATK</span><span class="col-heading">DEF</span>
+      <span>フィールド</span><input type="number" id="fieldAtk" value="0" min="0" max="1000000" step="0.01" aria-label="フィールド ATK（%）"><input type="number" id="fieldDef" value="0" min="0" max="1000000" step="0.01" aria-label="フィールド DEF（%）">
+<span>メモリー・アイテム</span><input type="number" id="supportAtk" value="0" min="0" max="1000000" step="0.01" aria-label="メモリー・アイテム ATK（%）"><input type="number" id="supportDef" value="0" min="0" max="1000000" step="0.01" aria-label="メモリー・アイテム DEF（%）">
+<span>アクティブ</span><input type="number" id="activeAtk" value="0" min="0" max="1000000" step="0.01" aria-label="アクティブ ATK（%）"><input type="number" id="activeDef" value="0" min="0" max="1000000" step="0.01" aria-label="アクティブ DEF（%）">
+<span>リンク</span><input type="number" id="linkAtk" value="0" min="0" max="1000000" step="0.01" aria-label="リンク ATK（%）"><input type="number" id="linkDef" value="0" min="0" max="1000000" step="0.01" aria-label="リンク DEF（%）">
+<span>味方パッシブ支援</span><input type="number" id="allyAtk" value="0" min="0" max="1000000" step="0.01" aria-label="味方パッシブ支援 ATK（%）"><input type="number" id="allyDef" value="0" min="0" max="1000000" step="0.01" aria-label="味方パッシブ支援 DEF（%）">
     </div>
-
-    <label>アクティブ(%)</label>
-    <div class="row">
-      <input type="number" id="activeAtk" placeholder="ATK">
-      <input type="number" id="activeDef" placeholder="DEF">
+    <label for="allyTiming">味方パッシブ支援の区分</label>
+    <select id="allyTiming"><option value="1">足し算パッシブ</option><option value="2">掛け算パッシブ</option></select>
+  </section>
+  <section class="section">
+    <div class="section-heading"><h2>パッシブスキル</h2><a href="spec.html#passive">判定ルール</a></div>
+    <label for="passiveMode">入力方法</label>
+    <select id="passiveMode"><option value="auto">テキストから解析</option><option value="manual">倍率を直接入力</option></select>
+    <label for="passiveSkill">有効なパッシブ</label>
+    <textarea id="passiveSkill" maxlength="10000" placeholder="基本効果&#10;ATK/DEF200%UP&#10;攻撃時&#10;ATK100%UP"></textarea>
+    <div class="field-grid passive-summary">
+      <label for="passive1Atk">足し算 ATK（%）<input type="number" id="passive1Atk" value="0" min="0" max="1000000" step="0.01"></label>
+      <label for="passive1Def">足し算 DEF（%）<input type="number" id="passive1Def" value="0" min="0" max="1000000" step="0.01"></label>
+      <label for="passive2Atk">掛け算 ATK（%）<input type="number" id="passive2Atk" value="0" min="0" max="1000000" step="0.01"></label>
+      <label for="passive2Def">掛け算 DEF（%）<input type="number" id="passive2Def" value="0" min="0" max="1000000" step="0.01"></label>
     </div>
-
-    <label>リンク(%)</label>
-    <div class="row">
-      <input type="number" id="linkAtk" placeholder="ATK">
-      <input type="number" id="linkDef" placeholder="DEF">
+    <p id="passiveWarning" class="notice" role="status"></p>
+  </section>
+  <section class="section">
+    <h2>必殺技の共通設定</h2>
+    <div class="field-grid">
+      <label for="superPowerLv">潜在能力・必殺技威力UP Lv<input type="number" id="superPowerLv" value="0" min="0" max="1000" step="1"></label>
+      <label for="attackOrder">発動順<select id="attackOrder"><option value="ultra-first">超必殺 → 必殺</option><option value="normal-first">必殺 → 超必殺</option></select></label>
+      <label for="previousAtkEffect">持ち越し必殺効果 ATK（%）<input type="number" id="previousAtkEffect" value="0" min="0" max="1000000" step="0.01"></label>
+      <label for="previousDefEffect">持ち越し必殺効果 DEF（%）<input type="number" id="previousDefEffect" value="0" min="0" max="1000000" step="0.01"></label>
     </div>
-
-    <label>気力倍率</label>
-    <select id="kiBonus">
-      <option value="2.0">LR 2倍</option>
-      <option value="1.6">特殊フェス限UR 1.6倍</option>
-      <option value="1.5">フェス限UR 1.5倍</option>
-      <option value="1.4">通常ガチャ産 1.4倍</option>
-      <option value="1.3">イベント産 1.3倍</option>
-    </select>
-  </div>
-
-  <!-- 必殺 -->
-  <div class="card">
-    <div class="card-title">必殺技</div>
-
-    <label>必殺技倍率</label>
-    <select id="normalMultiplier">
-      <!-- ← 中身そのまま -->
-      <option value="8.4">LR 極限前 EX必殺技 (8.4)</option>
-      <option value="7.4">UR 極限前 EX必殺技 (7.4)</option>
-      <option value="5.9">LR 極限後 超極大 (5.9)</option>
-      <option value="5.4">LR 極限前 超極大 (5.4)</option>
-      <option value="4.2">LR 極限後 極大 (4.2)</option>
-      <option value="3.95">LR 極限前 極大 (3.95)</option>
-      <option value="6.3">UR 極限後 超絶特大 (6.3)</option>
-      <option value="5.05">UR 極限前 超絶特大 (5.05)</option>
-      <option value="5.3">UR 極限後 超特大 (5.3)</option>
-      <option value="4.3">UR 極限前 超特大 (4.3)</option>
-      <option value="4.3">SSR or Z覚醒UR 極限後 特大 (4.3)</option>
-      <option value="3.55">SSR or Z覚醒UR 極限前 特大 (3.55)</option>
-    </select>
-
-    <label>必殺技効果(ATK)</label>
-    <select id="normalAtkEffect">
-      <option value="0">なし</option>
-      <option value="20">ATK20%UP</option>
-      <option value="30">ATK30%UP</option>
-      <option value="50">ATK50%UP</option>
-      <option value="100">ATK100%UP</option>
-      <option value="custom">自由</option>
-    </select>
-    <input type="number" id="normalCustomAtk" class="hidden" placeholder="自由入力(%)">
-
-    <label>必殺技効果(DEF)</label>
-    <select id="normalDefEffect">
-      <option value="0">なし</option>
-      <option value="20">DEF20%UP</option>
-      <option value="30">DEF30%UP</option>
-      <option value="50">DEF50%UP</option>
-      <option value="100">DEF100%UP</option>
-      <option value="custom">自由</option>
-    </select>
-    <input type="number" id="normalCustomDef" class="hidden" placeholder="自由入力(%)">
-
-    <label>必殺回数</label>
-    <input type="number" id="normalCount" value="0" min="0">
-
-    <label>追加効果</label>
-    <select id="normalPlus">
-      <option value="0">-</option>
-      <option value="0.2">必殺技の効果が更にアップ！</option>
-      <option value="0.3">必殺技の効果が更に大アップ！</option>
-    </select>
-  </div>
-
-  <!-- 超必殺技 -->
-  <div class="card">
-    <div class="card-title">超必殺技</div>
-
-    <label>必殺技倍率</label>
-    <select id="ultraMultiplier">
-      <!-- ← 中身そのまま -->
-      <option value="8.4">LR 極限前 EX必殺技 (8.4)</option>
-      <option value="7.4">UR 極限前 EX必殺技 (7.4)</option>
-      <option value="5.9">LR 極限後 超極大 (5.9)</option>
-      <option value="5.4">LR 極限前 超極大 (5.4)</option>
-      <option value="4.2">LR 極限後 極大 (4.2)</option>
-      <option value="3.95">LR 極限前 極大 (3.95)</option>
-      <option value="6.3">UR 極限後 超絶特大 (6.3)</option>
-      <option value="5.05">UR 極限前 超絶特大 (5.05)</option>
-      <option value="5.3">UR 極限後 超特大 (5.3)</option>
-      <option value="4.3">UR 極限前 超特大 (4.3)</option>
-      <option value="4.3">SSR or Z覚醒UR 極限後 特大 (4.3)</option>
-      <option value="3.55">SSR or Z覚醒UR 極限前 特大 (3.55)</option>
-    </select>
-
-    <label>必殺技効果(ATK)</label>
-    <select id="ultraAtkEffect">
-      <option value="0">なし</option>
-      <option value="20">ATK20%UP</option>
-      <option value="30">ATK30%UP</option>
-      <option value="50">ATK50%UP</option>
-      <option value="100">ATK100%UP</option>
-      <option value="custom">自由</option>
-    </select>
-    <input type="number" id="ultraCustomAtk" class="hidden" placeholder="自由入力(%)">
-
-    <label>必殺技効果(DEF)</label>
-    <select id="ultraDefEffect">
-      <option value="0">なし</option>
-      <option value="20">DEF20%UP</option>
-      <option value="30">DEF30%UP</option>
-      <option value="50">DEF50%UP</option>
-      <option value="100">DEF100%UP</option>
-      <option value="custom">自由</option>
-    </select>
-    <input type="number" id="ultraCustomDef" class="hidden" placeholder="自由入力(%)">
-
-    <label>必殺回数</label>
-    <input type="number" id="ultraCount" value="0" min="0">
-
-    <label>追加効果</label>
-    <select id="ultraPlus">
-      <option value="0">-</option>
-      <option value="0.2">必殺技の効果が更にアップ！</option>
-      <option value="0.3">必殺技の効果が更に大アップ！</option>
-    </select>
-  </div>
-
-  <!-- リーダー -->
-  <div class="card">
-    <div class="card-title">リーダー</div>
-    <label>自前リーダー(%)</label>  
-    <input type="number" id="leaderSkill" placeholder="例：170">
-    <label>フレンドリーダー(%)</label> 
-    <input type="number" id="friendLeaderSkill" placeholder="例：220">
-  </div>
-
-  <!-- パッシブ -->
-  <div class="card full">
-    <div class="card-title">パッシブ</div>
-    <textarea id="passiveSkill"></textarea>
-  </div>
-
-  <!-- ボタン -->
-  <div class="card full">
-    <button type="button" id="calculateButton">計算</button>
-  </div>
-
-  <!-- 結果 -->
-  <div class="card full result">
-    <div id="resultAtk">-</div>
-    <div id="resultDef">-</div>
-    <pre id="detail"></pre>
-  </div>
-
-  <div class="card full">
-    <div class="card-title">耐久ライン</div>
-
-    <label>ダメージ軽減率 (%)</label>
-    <input type="number" id="damageReduction" value="0">
-
-    <label class="dokkan-check">
-      全属性ガード
-      <input type="checkbox" id="guard">
-      <span class="box"></span>
-    </label>
-
-    <div id="hpResult"></div>
-  </div>
-
+  </section>
+  <div class="attack-sections"><section class="section">
+<h2>必殺技</h2>
+<label for="normalCount">発動回数<input type="number" id="normalCount" value="1" min="0" max="20" step="1"></label>
+<label for="normalKiBonus">気力倍率<input type="number" id="normalKiBonus" value="1.5" min="0.01" max="10" step="0.01"></label>
+<label for="normalMultiplier">必殺技倍率（追加ボーナスを除く）<input type="number" id="normalMultiplier" value="3.95" min="0" max="1000" step="0.01" list="multiplierValues"></label>
+<label for="normalPlus">技レベル到達ボーナス</label>
+<select id="normalPlus"><option value="0">なし</option><option value="0.2">威力アップ（+0.20）</option><option value="0.3" selected>威力大アップ（+0.30）</option></select>
+<label for="normalAtkEffect">必殺効果・ATK（%）</label>
+<select id="normalAtkEffect"><option value="0">なし</option><option value="20">20%上昇</option><option value="30">30%上昇</option><option value="50">50%上昇</option><option value="100">100%上昇</option><option value="custom">自由入力</option></select>
+<input type="number" id="normalCustomAtk" class="hidden" min="0" max="1000000" step="0.01" aria-label="必殺 ATK上昇率">
+<label for="normalDefEffect">必殺効果・DEF（%）</label>
+<select id="normalDefEffect"><option value="0">なし</option><option value="20">20%上昇</option><option value="30">30%上昇</option><option value="50">50%上昇</option><option value="100">100%上昇</option><option value="custom">自由入力</option></select>
+<input type="number" id="normalCustomDef" class="hidden" min="0" max="1000000" step="0.01" aria-label="必殺 DEF上昇率">
+</section>
+<section class="section">
+<h2>超必殺技</h2>
+<label for="ultraCount">発動回数<input type="number" id="ultraCount" value="0" min="0" max="20" step="1"></label>
+<label for="kiBonus">気力倍率<input type="number" id="kiBonus" value="2" min="0.01" max="10" step="0.01"></label>
+<label for="ultraMultiplier">必殺技倍率（追加ボーナスを除く）<input type="number" id="ultraMultiplier" value="5.4" min="0" max="1000" step="0.01" list="multiplierValues"></label>
+<label for="ultraPlus">技レベル到達ボーナス</label>
+<select id="ultraPlus"><option value="0">なし</option><option value="0.2">威力アップ（+0.20）</option><option value="0.3" selected>威力大アップ（+0.30）</option></select>
+<label for="ultraAtkEffect">必殺効果・ATK（%）</label>
+<select id="ultraAtkEffect"><option value="0">なし</option><option value="20">20%上昇</option><option value="30">30%上昇</option><option value="50">50%上昇</option><option value="100">100%上昇</option><option value="custom">自由入力</option></select>
+<input type="number" id="ultraCustomAtk" class="hidden" min="0" max="1000000" step="0.01" aria-label="超必殺 ATK上昇率">
+<label for="ultraDefEffect">必殺効果・DEF（%）</label>
+<select id="ultraDefEffect"><option value="0">なし</option><option value="20">20%上昇</option><option value="30">30%上昇</option><option value="50">50%上昇</option><option value="100">100%上昇</option><option value="custom">自由入力</option></select>
+<input type="number" id="ultraCustomDef" class="hidden" min="0" max="1000000" step="0.01" aria-label="超必殺 DEF上昇率">
+</section></div>
+  <datalist id="multiplierValues">
+    <option value="3.95">極大 Lv.20</option><option value="4.2">極大 Lv.25</option>
+    <option value="5.4">超極大 Lv.20</option><option value="5.9">超極大 Lv.25</option>
+    <option value="5.05">超絶特大 Lv.10</option><option value="6.3">超絶特大 Lv.15</option>
+  </datalist>
+  <div class="calculate-bar"><button type="submit" id="calculateButton">計算する</button></div>
+  <p id="calculationError" class="notice error" role="alert"></p>
   <div class="file-area">
-
-  <div class="file-buttons">
-    <button type="button" id="saveButton" class="btn save">
-      💾 JSON保存
-    </button>
-
-    <label for="fileLoader" class="btn load">
-      📂 読み込む
-      <input type="file" id="fileLoader" accept="application/json" hidden>
-    </label>
+    <div class="file-buttons">
+      <button type="button" id="saveButton" class="btn">JSON保存</button>
+      <button type="button" id="loadButton" class="btn">JSON読み込み</button>
+      <input type="file" id="fileLoader" accept=".json,application/json" hidden>
+    </div>
+    <div class="file-name-box"><span id="fileName">未選択</span></div>
+    <p id="fileStatus" role="status"></p>
   </div>
-
-  <div class="file-name-box">
-    <span id="fileName">未選択</span>
+</form>
+<aside class="result-panel" id="results" aria-labelledby="resultHeading">
+  <h2 id="resultHeading">計算結果</h2>
+  <p id="resultStatus" class="muted" role="status">未計算</p>
+  <div class="result-values" aria-live="polite">
+    <div><span class="result-label">合計ATK</span><output id="resultAtk" class="result-value">—</output></div>
+    <div><span class="result-label">最終DEF</span><output id="resultDef" class="result-value">—</output></div>
   </div>
-
-</div>
-
-</div>
-
-
-<script src="script.js"></script>
-<script src="json.js"></script>
+  <p class="muted">表示ATKの合計です。敵に与えるダメージではありません。</p>
+  <details open><summary>攻撃ごとの内訳</summary><pre id="detail">未計算</pre></details>
+  <details>
+    <summary>耐久の参考値</summary>
+    <label for="damageReduction">ダメージ軽減率（%）</label>
+    <input type="number" id="damageReduction" value="0" min="0" max="100" step="0.01" form="calculatorForm">
+    <label class="dokkan-check"><input type="checkbox" id="guard" form="calculatorForm">全属性ガード</label>
+    <p class="muted">旧計算式による目安。敵側の補正・乱数は未対応です。</p>
+    <div id="hpResult">未計算</div>
+  </details>
+  <a href="spec.html#formula" class="muted">計算式・対応範囲</a>
+</aside>
+</main>
 </body>
 </html>

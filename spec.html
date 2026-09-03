@@ -1,105 +1,58 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
-  <title>ドッカンバトルシミュレーションの使い方</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="spec.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+<title>計算式・対応範囲 | ATK / DEF</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="spec.css">
+<link rel="icon" href="icon.png">
 </head>
-
 <body>
-<div class="tabs">
-  <a href="index.html" class="tab">計算</a>
-  <a href="spec.html" class="tab active">使い方</a>
-  <a href="comment.html" class="tab">コメント</a>
-</div>
-
-<div class="spec-container">
-
-    <h1>このサイトの使い方</h1>
-    
-    <h2>① 基本の使い方</h2>
-    <div class="section">
-      ・基礎ATK / DEF を入力<br>
-      ・リーダースキルを入力<br>
-      ・パッシブスキルを入力<br>
-      ・必殺技倍率を設定<br>
-      → 「計算」を押す
-    </div>
-
-    <h2>② パッシブスキルの書き方</h2>
-    <div class="section">
-      以下の形式で入力してください：
-
-      <div class="code">
-        基本効果
-        <br>
-        ・ATK/DEF150%UP
-        <br>
-        <br>
-        攻撃時
-        <br>
-        ・ATK100%UP
-        <br>
-        <br>
-
-        数値を含まない行は見出しとして扱われます
-        <br>
-        例：
-        <br>
-        基本効果
-        <br>
-        攻撃時
-        <br>
-        <br>
-
-        先頭に「-」をつけると無効化されます
-        <br>
-
-        例：
-        <br>
-        -基本効果 → その見出しを無効
-        <br>
-        -・ATK150%UP → その行のみ無効
-        <br>
-        <br>
-
-        ATK/DEFを含まない数値は計算に影響しません
-        <br>
-        例：
-        <br>
-        HP50%以下 → 無視されます
-      </div>
-    </div>
-
-    <h2>③ パッシブ判定ルール</h2>
-    <div class="section">
-      ● パッシブ1（常時系）<br>
-      基本効果 / 登場時 / ターン開始など<br><br>
-
-      ● パッシブ2（条件系）<br>
-      攻撃時 / 攻撃を受けるとき / 回避するたび など
-    </div>
-
-    <h2>④ 耐久ラインについて</h2>
-    <div class="section">
-      完封ライン：ダメージ0になる敵ATK<br>
-      耐久ライン：HP内で耐えられる最大敵ATK
-    </div>
-
-    <h2>⑤ 注意事項</h2>
-    <div class="section">
-      ・実際のゲームとは完全一致ではありません<br>
-      ・あくまで理論値・目安です
-    </div>
-
-    <h2>⑥ メインページへ</h2>
-    <div class="section">
-      <a href="index.html">▶ 計算機に戻る</a>
-    </div>
-</div>
-
+<nav class="tabs" aria-label="メインナビゲーション">
+<a href="index.html" class="tab">計算</a>
+<a href="spec.html" class="tab active" aria-current="page">使い方・計算式</a>
+<a href="comment.html" class="tab">コメント</a>
+</nav>
+<main class="spec-container">
+<h1>計算式・対応範囲</h1>
+<section class="section" id="formula">
+<h2>ATKとDEF</h2>
+<p>ATKは各必殺技の表示攻撃力、合計ATKはその合算です。DEFには気力倍率と必殺技の威力倍率を適用せず、必殺効果のDEF上昇だけを加味します。</p>
+<p>同一区分の補正は加算、区分間は乗算します。味方のパッシブ支援は選択したパッシブ区分に合算し、メモリー・アイテムは独立した補正にします。</p>
+<p>整数化の順序は、リーダー → フィールド → メモリー・アイテム → 足し算パッシブ → アクティブ → リンク → 気力（ATKのみ）→ 掛け算パッシブ → 必殺補正。各段階で切り捨て、最後の段階だけ四捨五入します。</p>
+<p>参考記事のモデル図に沿った順序です。ただし、図には中間値の算術的な不一致があり、掲載された最終値との完全一致は保証しません。定数加算・特殊なキャラクター固有処理は未対応です。</p>
+</section>
+<section class="section">
+<h2>必殺技の設定</h2>
+<p>必殺技倍率には素の倍率を入力し、技レベル到達ボーナス、潜在能力の威力UP（Lvごとに+0.05）、ATK上昇効果を加算します。例えば超極大Lv.20の5.40とボーナス0.30は別々に入力します。ボーナス込みの倍率を使う場合は、ボーナスを「なし」にしてください。</p>
+<p>気力倍率はキャラクターと気力に応じて変わるため、必殺技・超必殺技で別々に指定します。初期値の1.50・2.00は全キャラクター共通ではありません。</p>
+<p>発動順にATK・DEF上昇を累積します。持ち越し欄には現在も有効な必殺効果の合計を入力します。各効果の期限や条件は自動判定しません。攻撃ごとにパッシブが変動する場合や、一時的な上昇効果、アクティブ攻撃そのものは未対応です。</p>
+</section>
+<section class="section" id="passive">
+<h2>パッシブの判定</h2>
+<p>有効な効果を、見出しと倍率に分けて入力します。同じ行に異なるATK・DEF倍率を書けます。HP条件の数字は倍率に足しません。行頭の「-」はその行を、見出しの「-」は次の見出しまでを無効にします。</p>
+<pre class="code">基本効果
+ATK200%UP、DEF150%UP
+攻撃時
+ATK/DEF100%UP</pre>
+<p>基本・登場・気玉取得などは足し算、攻撃時や行動をきっかけに発動する効果などは掛け算に分類します。未達成の条件は「-」で除外してください。発動回数や人数、上限付き効果は合計倍率へ書き換えるか「倍率を直接入力」で指定します。解析できない行がある場合は計算を止めます。</p>
+<p>自然文解析では固有の例外までは判定できません。判定結果の4つの倍率を確認してください。味方支援を別欄に入れた場合、テキストにも重複して入れないでください。</p>
+</section>
+<section class="section">
+<h2>耐久の参考値</h2>
+<p>耐久欄は旧実装の近似式を引き継いでいます。今回のATK・DEF記事は被ダメージ式の検証資料ではないため、検証済みの結果とは扱っていません。敵側の補正や乱数、最低ダメージなどを含まない参考値です。</p>
+</section>
+<section class="section">
+<h2>参考資料</h2>
+<ul>
+<li><a href="https://xn--n9jvd7d3d0ad5cwnpcu694dohxad89g.com/archives/605069.html">数字で見るドッカンバトル：ATK・DEFの計算方法</a></li>
+<li><a href="https://xn--n9jvd7d3d0ad5cwnpcu694dohxad89g.com/archives/dfrs-2.html">パッシブの分類</a></li>
+<li><a href="https://xn--n9jvd7d3d0ad5cwnpcu694dohxad89g.com/archives/606997.html">必殺技威力と追加効果</a></li>
+<li><a href="https://xn--n9jvd7d3d0ad5cwnpcu694dohxad89g.com/archives/605473.html">気力ボーナス</a></li>
+</ul>
+</section>
+</main>
 </body>
 </html>
